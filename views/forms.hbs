@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/image/f.png" type="image/x-icon">
+    {{!-- <link rel="stylesheet" href="../css/bootstrap.min.css"> --}}
+
+    <title>{{metaTitle}}</title>
+</head>
+<body>
+    <a href="/api/allwriter">Home</a>
+    <h2>{{title}}</h2>
+    
+
+    <fieldset>
+        <legend>Sign Up</legend>
+        <form action="/api/create" method="POST">
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Submit</button>
+        </form>
+    </fieldset><br><br>
+
+    <fieldset>
+        <legend>Sign In</legend>
+        <form action="/api/login" method="POST">
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Submit</button>
+        </form>
+    </fieldset><br><br>
+
+    <fieldset>
+        <legend>Forgot Password</legend>
+        <form action="/api/forgotpassword" method="POST">
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="Enter Your" required>
+        <button type="submit">Submit</button>
+        </form>
+    </fieldset><br><br>
+
+    <fieldset>
+        <legend>Reset Password</legend>
+        <form action="/api/resetpassword/:resetToken" method="PUT">
+        <label for="password">New Password</label>
+        <input type="password" name="password" placeholder="Enter new password" required>
+        <button type="submit">Submit</button>
+        </form>
+    </fieldset>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
