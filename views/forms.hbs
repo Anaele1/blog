@@ -16,6 +16,8 @@
     <fieldset>
         <legend>Sign Up</legend>
         <form action="/api/create" method="POST">
+        <label for="name">Name</label>
+        <input type="name" name="name" placeholder="Enter your name" required>
         <label for="email">Email</label>
         <input type="email" name="email" placeholder="Enter your email" required>
         <label for="password">Password</label>
@@ -51,6 +53,19 @@
         <input type="password" name="password" placeholder="Enter new password" required>
         <button type="submit">Submit</button>
         </form>
+    </fieldset><br><br>
+
+    <fieldset>
+        <legend>Upload image</legend>
+        <form action="/api/add" method="POST" enctype="multipart/form-data">
+                <label>Id:</label>
+                <input type="text" name="id" required>
+
+                <label>Image:</label>
+                <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Upload Image</button>
+        </form>
+
     </fieldset>
 
     <script src="../js/bootstrap.bundle.min.js"></script>

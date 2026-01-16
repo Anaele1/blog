@@ -1,12 +1,19 @@
 const express = require('express');
 const accountController = require('../controllers/accountController');
+const { tokenAuth, JWT } = require('../middlewares/auth');
+const upload = require('../config/multer');
 const router = express.Router();
+
+router.post('/add', upload.single('image'), accountController.addImage);
 
 // Form route
 router.get('/form', accountController.forms);
 
 // Dashboard route
-router.get('/dashboard', accountController.dashboard);
+router.get('/dashboard', JWT, accountController.dashboard);
+
+// Dashboard route
+router.get('/profile', JWT, accountController.profile);
 
 // Create Account route
 router.post('/create', accountController.signup);
@@ -36,7 +43,7 @@ router.put('/resetpassword/:resetToken', accountController.resetForgotPassword);
 router.patch('/resetpassword/:id', accountController.loggedInResetPassword);
 
 // Logout writer route
-router.post('/logout', accountController.logout);
+router.get('/logout', accountController.logout);
 
 
 module.exports = router;

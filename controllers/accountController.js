@@ -8,6 +8,25 @@ const salts = 12;
 // const { write } = require("fs");
 // const { send } = require("process");
 
+// Add image
+exports.addImage = async (req, res) => {
+     try {
+        if (!req.file) {
+            return res.status(401).json('req.file is empty')
+        }
+    const {id} = req.body;
+   
+    const imagePath = '/uploads/' + req.file.filename;  // URL path (not full disk path)
+
+    const writerImage = await writerModel.findByIdAndUpdate(id, { image: imagePath });
+    return res.status(200).json({ success: true, message: writerImage });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500)
+  }
+}
+
 // Form
 exports.forms = (req, res) => {
     res.render('forms', {title: 'Forms', metaTitle: 'form'});
@@ -15,14 +34,19 @@ exports.forms = (req, res) => {
 
 // Dashboard
 exports.dashboard = (req, res) => {
-    res.render('dashboard', {title: 'Dashboard', metaTitle: 'dashboard'});
+    res.render('dashboard', {title: 'Dashboard', metaTitle: 'dashboard',   user: req.user});
+};
+
+// Dashboard
+exports.profile = (req, res) => {
+    res.render('profile', {title: 'Profile', metaTitle: 'profile',   user: req.user});
 };
 
 // Create Account
 exports.signup = async (req, res) => {
-    const { password, email } = req.body;
+    const { password, email, name} = req.body;
     try {
-        if (!password || !email) {
+        if (!password || !email || !name) {
             console.log('Email or Password required')
             return res.status(401).json({ success: false, message: 'Email or Password required' })
         }
@@ -35,7 +59,7 @@ exports.signup = async (req, res) => {
         const hashN = await bcrypt.hash(password, salts)
         console.log(hashN)
 
-        const newWriter = new writerModel({ password: hashN, email })
+        const newWriter = new writerModel({ password: hashN, email, name })
         const result = await newWriter.save()
         result.password = undefined
 
@@ -69,10 +93,42 @@ exports.signin = async (req, res) => {
             return res.status(401).json({ success: false, message: `Password doesn't  exist` })
         }
 
+        // jwt payload
+        const userData = {
+            id: existingWriter._id,
+            email: existingWriter.email,
+            name: existingWriter.name,
+            image: existingWriter.image
+        };
+
+        //Access Token creation using JWT : Payload, + Secret, + Expiration time
+        const accessToken = jwt.sign(
+            userData, // Payload
+            process.env.ACCESS_SECRET, // Secret
+            { expiresIn: process.env.ACCESS_TIMEOUT} // Expiration timme
+        );
+        console.log('Access Token:', accessToken)
+
+        //Refresh Token creation using JWT : Payload, + Secret, + Expiration time
+        const refreshToken = jwt.sign(
+            userData, // Payload
+            process.env.REFRESH_SECRET, // Secret
+            { expiresIn: process.env.REFRESH_TIMEOUT} // Expiration timme
+        );
+        console.log('Refresh Token:', refreshToken)
+
+        res.cookie('accessToken', accessToken,           
+            {
+                httpOnly: true,
+                secure: 'proctected',
+                maxAge: 10 * 60 * 1000
+            }
+        )
+        
         res.redirect('/api/dashboard')
         // res.status(201).json({ success: true, message: `Logged in successfully` })
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 
 };
@@ -154,9 +210,9 @@ exports.updateWriterName = async (req, res) => {
 
 // Logout writer
 exports.logout = async (req, res) => {
-
     try {
-
+        res.clearCookie('token');
+        res.redirect('/api/form');
     } catch (error) {
         console.log(error)
         error.error.messager
@@ -308,7 +364,7 @@ exports.resetForgotPassword = async (req, res) => {
     if (!password) {
         return res.status(400).json({ message: 'Password filed required' })
     };
-    
+
     if (!resetToken) {
         return res.status(400).json({ message: 'Check and click on the link sent to the email you provided and follow the instruction to reset your password' })
     };

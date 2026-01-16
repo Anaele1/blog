@@ -11,6 +11,8 @@ const writerSchema = mongoose.Schema({
 
     email:{ type: String, required: true, trim: true, lowercase: true, unique: true},
 
+    image:{ type: String},
+
     resetPasswordToken: { type: String },
 
     resetPasswordExpire: { type: Date }

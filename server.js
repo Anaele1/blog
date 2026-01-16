@@ -27,8 +27,6 @@ app.use('/api', require('./routers/accountRouter'));
 app.use('/api/post', require('./routers/postRouter'));
 
 
-
-
 app.get('/', (req, res) => {
     //res.send(home)
     res.json({
