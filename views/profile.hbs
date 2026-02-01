@@ -8,7 +8,39 @@
 </head>
 <body>
     <h2>Welcome to {{title}}</h2>
+    <div>
+        <img src="{{user.image}}" alt="{{user.name}}" style="max-width: 150px;">
+        <form action="/api/add" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{user.id}}" required>
+                <input type="file" name="image" accept="image/*" required><br>
+            <button type="submit">Upload Image</button>
+        </form>
+    </div>
 
+    <div>
+        <form action="/api/bio" method="POST">
+            <input type="hidden" name="id" value="{{user.id}}" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" value="{{user.email}}">
+
+            <label for="name">Name</label>
+            <input type="text" name="name" value="{{user.name}}">
+
+            <label for="address">Address</label>
+            <input type="text" name="address" value="{{user.address}}">
+
+            <button type="submit">Upload Changes</button>
+        </form>
+    </div>
+
+    <div>
+        <form action="/api/delete" method="POST">
+            <input type="hidden" name="id" value="{{user.id}}" required>
+            <button type="submit">Delete Account</button>
+        </form>
+    </div>
     <a href="/api/logout">Logout</a>
+   
 </body>
 </html>

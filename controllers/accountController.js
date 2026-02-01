@@ -23,7 +23,8 @@ exports.addImage = async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    return res.status(500)
+    // return res.redirect('/api/profile');
+     return res.status(500)
   }
 }
 
@@ -37,7 +38,7 @@ exports.dashboard = (req, res) => {
     res.render('dashboard', {title: 'Dashboard', metaTitle: 'dashboard',   user: req.user});
 };
 
-// Dashboard
+// Profile
 exports.profile = (req, res) => {
     res.render('profile', {title: 'Profile', metaTitle: 'profile',   user: req.user});
 };
@@ -98,7 +99,8 @@ exports.signin = async (req, res) => {
             id: existingWriter._id,
             email: existingWriter.email,
             name: existingWriter.name,
-            image: existingWriter.image
+            image: existingWriter.image,
+            address: existingWriter.address
         };
 
         //Access Token creation using JWT : Payload, + Secret, + Expiration time
@@ -147,7 +149,7 @@ exports.getAllWriter = async (req, res) => {
 
 // Delete a writer
 exports.deleteWriter = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.body;
     // if (id.length < 24) {
     //     console.log('Wrong id')
     //     return res.status(401).json({ success: false, message: 'Wrong id' })
@@ -208,10 +210,27 @@ exports.updateWriterName = async (req, res) => {
     }
 };
 
+// Profile Bio-data changes api
+exports.bioDataChanges = async (req, res) => {
+    try {
+        const {id, name, address} = req.body;
+        if (!id) {
+            console.log('Please logout and login again');
+            return res.status(401).json('Please logout and login again');   
+        }
+
+        const profileDataUpdate = await writerModel.findByIdAndUpdate(id, {name, address})
+        console.log(profileDataUpdate)
+        return res.status(200).json('Success');
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 // Logout writer
 exports.logout = async (req, res) => {
     try {
-        res.clearCookie('token');
+        res.clearCookie('accessToken', '', {maxAge: 0});
         res.redirect('/api/form');
     } catch (error) {
         console.log(error)

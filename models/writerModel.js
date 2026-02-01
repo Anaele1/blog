@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const { hashPassword, getResetPasswordToken } = require('../utils/writerUtils');
+const { string } = require('joi');
 
 const writerSchema = mongoose.Schema({
     
-    name:{ type: String},
+    name:{ type: String}, 
+
+    username: { type: String, unique: true },
 
     address:{ type: String},
 

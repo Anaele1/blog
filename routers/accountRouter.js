@@ -12,7 +12,7 @@ router.get('/form', accountController.forms);
 // Dashboard route
 router.get('/dashboard', JWT, accountController.dashboard);
 
-// Dashboard route
+// Profile route
 router.get('/profile', JWT, accountController.profile);
 
 // Create Account route
@@ -25,7 +25,7 @@ router.post('/login', accountController.signin);
 router.get('/allWriter', accountController.getAllWriter);
 
 // Delete a writer route
-router.delete('/deleteWriter/:id', accountController.deleteWriter);
+router.post('/delete', accountController.deleteWriter);
 
 // Update writer address route
 router.patch('/update_address/:id', accountController.updateWriterAddress);
@@ -38,6 +38,9 @@ router.post('/forgotpassword', accountController.forgotPassword);
 
 // Forgot password reset route
 router.put('/resetpassword/:resetToken', accountController.resetForgotPassword);
+
+// Bio Data changes route
+router.post('/bio', accountController.bioDataChanges);
 
 // Change password for a logged in user route
 router.patch('/resetpassword/:id', accountController.loggedInResetPassword);
