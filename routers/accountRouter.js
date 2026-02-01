@@ -6,11 +6,6 @@ const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    //res.send(home)
-
-    // res.json({
-    //     message: 'Welcome',
-    // })
     res.render('main')
 })
 

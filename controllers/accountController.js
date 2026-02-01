@@ -4,10 +4,6 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const { userDetailsOnTemplate } = require("../utils/templateConsistency");
 const salts = 12;
-// const sendEmail = require('../utils/sendEmail');
-// const crypto = require('crypto');
-// const { write } = require("fs");
-// const { send } = require("process");
 
 // Add image
 exports.addImage = async (req, res) => {
@@ -155,10 +151,6 @@ exports.getAllWriter = async (req, res) => {
 // Delete a writer
 exports.deleteWriter = async (req, res) => {
     const { id } = req.body;
-    // if (id.length < 24) {
-    //     console.log('Wrong id')
-    //     return res.status(401).json({ success: false, message: 'Wrong id' })
-    // }
     try {
         const deleteWriter = await writerModel.findByIdAndDelete(id);
         if (!deleteWriter) {
