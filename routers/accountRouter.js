@@ -4,11 +4,6 @@ const { tokenAuth, JWT } = require('../middlewares/auth');
 const upload = require('../config/multer');
 const router = express.Router();
 
-
-router.get('/', (req, res) => {
-    res.render('main')
-})
-
 router.post('/add', upload.single('image'), accountController.addImage);
 
 // Form route
@@ -27,7 +22,7 @@ router.post('/create', accountController.signup);
 router.post('/login', accountController.signin);
 
 // Retrieve all writers route
-router.get('/allWriter', accountController.getAllWriter);
+router.get('/', accountController.getAllWriter);
 
 // Delete a writer route
 router.post('/delete', accountController.deleteWriter);

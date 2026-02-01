@@ -34,7 +34,7 @@ app.use('/js', express.static(path.join(__dirname, '../node_modules/bootstrap/di
 app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')));
 app.use('/api/article', require('../models/articleModel'));
 app.use('/api/writer', require('../models/writerModel'));
-app.use('/api', require('../routers/accountRouter'));
+app.use('/', require('../routers/accountRouter'));
 app.use('/api/post', require('../routers/postRouter'));
 
 module.exports = app;
