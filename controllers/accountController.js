@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const writerModel = require("../models/writerModel");
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
+const { userDetailsOnTemplate } = require("../utils/templateConsistency");
 const salts = 12;
 // const sendEmail = require('../utils/sendEmail');
 // const crypto = require('crypto');
@@ -35,12 +36,14 @@ exports.forms = (req, res) => {
 
 // Dashboard
 exports.dashboard = (req, res) => {
-    res.render('dashboard', {title: 'Dashboard', metaTitle: 'dashboard',   user: req.user});
+    const user = userDetailsOnTemplate(req.user);
+    res.render('dashboard', {title: 'Dashboard', metaTitle: 'dashboard',   user});
 };
 
 // Profile
 exports.profile = (req, res) => {
-    res.render('profile', {title: 'Profile', metaTitle: 'profile',   user: req.user});
+    const user = userDetailsOnTemplate(req.user);
+    res.render('profile', {title: 'Profile', metaTitle: 'profile',   user});
 };
 
 // Create Account
@@ -138,7 +141,9 @@ exports.signin = async (req, res) => {
 // Retrieve all writers
 exports.getAllWriter = async (req, res) => {
     try {
-        const result = await writerModel.find()
+        const writers = await writerModel.find()
+         // Convert each Mongoose document to a plain object
+        const result = writers.map(writer => writer.toObject());
         //res.json(result)
         res.render('index', {result, title: 'Home Page', metaTitle: 'home'})
     } catch (error) {

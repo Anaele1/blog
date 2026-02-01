@@ -4,6 +4,16 @@ const { tokenAuth, JWT } = require('../middlewares/auth');
 const upload = require('../config/multer');
 const router = express.Router();
 
+
+router.get('/', (req, res) => {
+    //res.send(home)
+
+    // res.json({
+    //     message: 'Welcome',
+    // })
+    res.render('main')
+})
+
 router.post('/add', upload.single('image'), accountController.addImage);
 
 // Form route

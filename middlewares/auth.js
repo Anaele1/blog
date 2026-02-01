@@ -8,8 +8,12 @@ async function JWT(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
-        const writer = await writerModel.findById(decoded.id);
-    if (!writer) return res.redirect('/api/form');
+        if (!decoded.id) {
+            return res.redirect('/api/form');
+        }
+
+        const writer = await writerModel.findById(decoded.id);      
+        if (!writer) return res.redirect('/api/form');
         req.user = writer;
         next();
     } catch (err) {
