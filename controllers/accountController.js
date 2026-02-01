@@ -63,7 +63,7 @@ exports.signup = async (req, res) => {
         const result = await newWriter.save()
         result.password = undefined
 
-        res.redirect('/api/form')
+        res.redirect('/form')
         // return res.status(201).json({ success: true, message: `Account created for the Writer with this email ${email}` })
     } catch (error) {
         console.log(error)
@@ -126,7 +126,7 @@ exports.signin = async (req, res) => {
             }
         )
         
-        res.redirect('/api/dashboard')
+        res.redirect('/dashboard')
         // res.status(201).json({ success: true, message: `Logged in successfully` })
     } catch (error) {
         console.log(error);
@@ -228,7 +228,7 @@ exports.bioDataChanges = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         res.clearCookie('accessToken', '', {maxAge: 0});
-        res.redirect('/api/form');
+        res.redirect('/form');
     } catch (error) {
         console.log(error)
         error.error.messager
