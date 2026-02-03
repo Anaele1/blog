@@ -1,46 +1,65 @@
-
-    <div id="sighUp">
+<main>
+    <div id="signUp" class="center">
         <h3>Sign Up</h3>
-        <form action="/create" method="POST">
-        <label for="username">User-Name</label>
-        <input type="name" name="username" placeholder="Create Username" required>
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Create your password" required>
-        <button type="submit">Submit</button>
+        <form class="a-form" action="/create" method="POST">
+            <div>
+                <label class="a-label"  for="username">User-Name</label><br>
+                <input class="a-input" type="name" name="username" placeholder="Create Username" required>
+            </div>
+            <div>
+                <label class="a-label"  for="email">Email</label><br>
+                <input class="a-input" type="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div>
+                <label class="a-label" for="password">Password</label><br>
+                <input class="a-input" type="password" name="password" placeholder="Create your password" required>
+            </div>
+            <button class="a-button"  type="submit">Submit</button>
+            <p> Have account with us <button onclick="Signin()" id="SignIn">Sign In</button></p>
         </form>
     </div>
 
     <div id="signIn">
         <h3>Sign In</h3>
-        <form action="/login" method="POST">
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Enter your password" required>
-        <button type="submit">Submit</button>
-        <p>Click for <a href="#forgotPassword">Forgot Password</a></p>
+        <form class="a-form" action="/login" method="POST">
+            <div>
+                <label class="a-label" for="email">Email</label><br>
+                <input class="a-input" type="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div>
+                <label class="a-label" for="password">Password</label><br>
+                <input class="a-input" type="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button class="a-button" type="submit">Submit</button>
+            <p>Don't have account with us <button onclick="Signup()" id="SignUp">Sign Up</button></p>
+            <p> Click for <button onclick="Forgotpws()" id="ForgotPsw">Forgot Password</button></p>
         </form>
     </div>
 
-    <div id="forgotPassword">
+    <div id="forgotPassword" class="center">
         <h3>Forgot Password</h3>
-        <form action="/forgotpassword" method="POST">
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Enter Your" required>
-        <button type="submit">Submit</button>
+        <form class="a-form" action="/forgotpassword" method="POST">
+            <div>
+                <label class="a-label" for="email">Email</label><br>
+                <input class="a-input" type="email" name="email" placeholder="Enter Your" required>
+                <p></p>
+            </div>
+            <button class="a-button" type="submit">Submit</button>
+            <p>Remebered Password<button onclick="Signin()" id="SignIn">Sign In</button>, Or Create a <button onclick="Signup()" id="SignUp">New Account</button></p>
         </form>
     </div>
 
-    <div id="resetPassword">
+    <div id="resetPassword" class="center">
         <h3>Reset Password</h3>
-        <form action="/resetpassword/:resetToken" method="PUT">
-        <label for="password">New Password</label>
-        <input type="password" name="password" placeholder="Enter new password" required>
-        <button type="submit">Submit</button>
+        <form class="a-form" action="/resetpassword/:resetToken" method="PUT">
+            <div>
+                <label class="a-label" for="password">New Password</label>
+                <input class="a-input" type="password" name="password" placeholder="Enter new password" required>
+            </div>
+            <button class="a-button" type="submit">Submit</button>
         </form>
     </div>
 
+</main>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
