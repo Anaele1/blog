@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
-const { hashPassword, getResetPasswordToken } = require('../utils/writerUtils');
-const { string } = require('joi');
 
 const writerSchema = mongoose.Schema({
     
     name:{ type: String}, 
 
-    username: { type: String, unique: true },
+    username: { type: String, unique: true, sparse: true },
 
     address:{ type: String},
 
@@ -22,10 +20,5 @@ const writerSchema = mongoose.Schema({
 },{
     timestamps: true
 });
-
-// Attach methods and middleware
-// writerSchema.pre('save', hashPassword);
-// writerSchema.methods.getResetPasswordToken = getResetPasswordToken;
-
 
 module.exports = mongoose.model('Writer', writerSchema);

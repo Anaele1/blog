@@ -1,5 +1,6 @@
 
     <h2>Welcome to {{title}}</h2>
+    <a href="/dashboard">Go to Dashboard</a>
     <div>
         <img src="{{user.image}}" alt="{{user.name}}" style="max-width: 150px;">
         <form action="/add" method="POST" enctype="multipart/form-data">
@@ -10,6 +11,8 @@
     </div>
 
     <div>
+        <label for="username">User-Name</label>
+        <input type="text" name="username" value="{{user.username}}" disabled>
         <form action="/bio" method="POST">
             <input type="hidden" name="id" value="{{user.id}}" required>
 

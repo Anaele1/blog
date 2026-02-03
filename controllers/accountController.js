@@ -7,22 +7,30 @@ const salts = 12;
 
 // Add image
 exports.addImage = async (req, res) => {
-     try {
+    try {
         if (!req.file) {
-            return res.status(401).json('req.file is empty')
+            return res.status(401).json('Please upload image')
         }
-    const {id} = req.body;
-   
-    const imagePath = '/uploads/' + req.file.filename;  // URL path (not full disk path)
+        
+        // Image size limit
+        const imgMaxSize = 2 * 1024 * 1024; // 2MB
+        if (req.file.size > imgMaxSize) {
+            return res.status(401).json('image must be less than 2MB')
+        }
 
-    const writerImage = await writerModel.findByIdAndUpdate(id, { image: imagePath });
-    return res.status(200).json({ success: true, message: writerImage });
+        const { id } = req.body;
 
-  } catch (err) {
-    console.error(err);
-    // return res.redirect('/api/profile');
-     return res.status(500)
-  }
+        //const imagePath = '/uploads/' + req.file.filename;  // URL path for local storage (development purpose)
+        const imagePath = req.file.path || req.file.url; // URL path for cloudinary storage (production/deployment purpose)
+
+        const writerImage = await writerModel.findByIdAndUpdate(id, { image: imagePath });
+        return res.status(200).json({ success: true, message: writerImage });
+
+    } catch (err) {
+        console.error(err);
+        // return res.redirect('/api/profile');
+        return res.status(500)
+    }
 }
 
 // Form
@@ -44,11 +52,11 @@ exports.profile = (req, res) => {
 
 // Create Account
 exports.signup = async (req, res) => {
-    const { password, email, name} = req.body;
+    const { password, email, username} = req.body;
     try {
-        if (!password || !email || !name) {
+        if (!password || !email || !username) {
             console.log('Email or Password required')
-            return res.status(401).json({ success: false, message: 'Email or Password required' })
+            return res.status(401).json({ success: false, message: 'Email, Username and Password are required' })
         }
 
         const existingWriter = await writerModel.findOne({ email })
@@ -59,7 +67,7 @@ exports.signup = async (req, res) => {
         const hashN = await bcrypt.hash(password, salts)
         console.log(hashN)
 
-        const newWriter = new writerModel({ password: hashN, email, name })
+        const newWriter = new writerModel({ password: hashN, email, username })
         const result = await newWriter.save()
         result.password = undefined
 
@@ -98,6 +106,7 @@ exports.signin = async (req, res) => {
             id: existingWriter._id,
             email: existingWriter.email,
             name: existingWriter.name,
+            username: existingWriter.username,
             image: existingWriter.image,
             address: existingWriter.address
         };
