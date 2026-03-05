@@ -3,6 +3,7 @@ const writerModel = require("../models/writerModel");
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const { userDetailsOnTemplate } = require("../utils/templateConsistency");
+const articleModel = require("../models/articleModel");
 const salts = 12;
 
 // Add image
@@ -11,7 +12,7 @@ exports.addImage = async (req, res) => {
         if (!req.file) {
             return res.status(401).json('Please upload image')
         }
-        
+
         // Image size limit
         const imgMaxSize = 2 * 1024 * 1024; // 2MB
         if (req.file.size > imgMaxSize) {
@@ -35,33 +36,42 @@ exports.addImage = async (req, res) => {
 
 // Form
 exports.forms = (req, res) => {
-    res.render('forms', {title: 'Forms', metaTitle: 'form'});
+    res.render('forms', { title: 'Forms', metaTitle: 'form' });
 };
 
 // Dashboard
 exports.dashboard = (req, res) => {
     const user = userDetailsOnTemplate(req.user);
-    res.render('dashboard', {title: 'Dashboard', metaTitle: 'dashboard',   user});
+    const errorMessage = req.query.success_msg;
+    res.render('dashboard', { title: 'Dashboard', metaTitle: 'dashboard', message: errorMessage, user });
 };
 
 // Profile
 exports.profile = (req, res) => {
     const user = userDetailsOnTemplate(req.user);
-    res.render('profile', {title: 'Profile', metaTitle: 'profile',   user});
+    const updateMessage = req.query.update_msg;
+    res.render('profile', { title: 'Profile', metaTitle: 'profile', message: updateMessage, user });
 };
 
 // Create Account
 exports.signup = async (req, res) => {
-    const { password, email, username} = req.body;
+    const { password, email, username } = req.body;
     try {
         if (!password || !email || !username) {
             console.log('Email or Password required')
-            return res.status(401).json({ success: false, message: 'Email, Username and Password are required' })
+            return res.status(401).render('forms', {
+                errors: 'Email, Username and Password are required',
+            });
+
+            //json({ success: false, message: 'Email, Username and Password are required' })
         }
 
         const existingWriter = await writerModel.findOne({ email })
         if (existingWriter) {
-            return res.status(401).json({ success: false, message: `Writer exist with this ${email}` })
+            return res.status(401).render('forms', {
+                errors: `Writer exist with this ${email}`,
+            });
+            //json({ success: false, message: `Writer exist with this ${email}` })
         }
 
         const hashN = await bcrypt.hash(password, salts)
@@ -71,11 +81,15 @@ exports.signup = async (req, res) => {
         const result = await newWriter.save()
         result.password = undefined
 
-        res.redirect('/form')
-        // return res.status(201).json({ success: true, message: `Account created for the Writer with this email ${email}` })
+        return res.status(200).render('forms', {
+            success: `Account created successfully ${email}`,
+        });// return res.status(201).json({ success: true, message: `Account created for the Writer with this email ${email}` })
     } catch (error) {
         console.log(error)
-        return res.status(401).json({ success: false, message: 'Cannot create account' })
+        return res.status(401).render('forms', {
+            errors: 'Cannot create account',
+        });
+        //json({ success: false, message: 'Cannot create account' })
     }
 
 };
@@ -86,19 +100,27 @@ exports.signin = async (req, res) => {
     try {
         if (!password || !email) {
             console.log('Email or Password required')
-            return res.status(401).json({ success: false, message: 'Email or Password required' })
+            return res.status(401).render('forms', {
+                errors: 'Email or Password required',
+            });
         }
 
         const existingWriter = await writerModel.findOne({ email })
         console.log(existingWriter)
         if (!existingWriter) {
-            return res.status(401).json({ success: false, message: `Writer doesn't  exist with this ${email}` })
+            return res.status(401).render('forms', {
+                errors: `Writer doesn't  exist with this ${email}`,
+            });
+            //json({ success: false, message: `Writer doesn't  exist with this ${email}` })
         }
 
         const result = await bcrypt.compare(password, existingWriter.password);
         console.log("RESULT", result);
         if (!result) {
-            return res.status(401).json({ success: false, message: `Password doesn't  exist` })
+            return res.status(401).render('forms', {
+                errors: `Wrong Crendentials`,
+            });
+            //json({ success: false, message: `Password doesn't  exist` })
         }
 
         // jwt payload
@@ -109,13 +131,14 @@ exports.signin = async (req, res) => {
             username: existingWriter.username,
             image: existingWriter.image,
             address: existingWriter.address
+            // articleTitle: existingWriter.title
         };
 
         //Access Token creation using JWT : Payload, + Secret, + Expiration time
         const accessToken = jwt.sign(
             userData, // Payload
             process.env.ACCESS_SECRET, // Secret
-            { expiresIn: process.env.ACCESS_TIMEOUT} // Expiration timme
+            { expiresIn: process.env.ACCESS_TIMEOUT } // Expiration timme
         );
         console.log('Access Token:', accessToken)
 
@@ -123,22 +146,25 @@ exports.signin = async (req, res) => {
         const refreshToken = jwt.sign(
             userData, // Payload
             process.env.REFRESH_SECRET, // Secret
-            { expiresIn: process.env.REFRESH_TIMEOUT} // Expiration timme
+            { expiresIn: process.env.REFRESH_TIMEOUT } // Expiration timme
         );
         console.log('Refresh Token:', refreshToken)
 
-        res.cookie('accessToken', accessToken,           
+        res.cookie('accessToken', accessToken,
             {
                 httpOnly: true,
                 secure: 'proctected',
                 maxAge: 10 * 60 * 1000
             }
         )
-        
-        res.redirect('/dashboard')
+
+        res.redirect('/dashboard?success_msg=Login+Successful')
         // res.status(201).json({ success: true, message: `Logged in successfully` })
     } catch (error) {
         console.log(error);
+        return res.status(401).render('forms', {
+            errors: 'Cannot create account',
+        });
     }
 
 };
@@ -147,13 +173,18 @@ exports.signin = async (req, res) => {
 exports.getAllWriter = async (req, res) => {
     try {
         const writers = await writerModel.find()
-         // Convert each Mongoose document to a plain object
+        // Convert each Mongoose document to a plain object
         const result = writers.map(writer => writer.toObject());
         //res.json(result)
-        res.render('index', {result, title: 'Home Page', metaTitle: 'home'})
+
+        const allPost = await articleModel.find().populate('writerId', 'username');
+        const results = allPost.map(writer => writer.toObject());
+        console.log(results);
+        
+        res.render('index', { result, results, title: 'Home Page', metaTitle: 'home' })
     } catch (error) {
         console.log(error)
-	res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -219,24 +250,25 @@ exports.updateWriterName = async (req, res) => {
 // Profile Bio-data changes api
 exports.bioDataChanges = async (req, res) => {
     try {
-        const {id, name, address} = req.body;
+        const { id, name, address } = req.body;
         if (!id) {
-            console.log('Please logout and login again');
-            return res.status(401).json('Please logout and login again');   
+            //return res.status(401).json('Please logout and login again');
+            return res.redirect('/profile?update_msg=Please+logout+and+login+again')
         }
 
-        const profileDataUpdate = await writerModel.findByIdAndUpdate(id, {name, address})
+        const profileDataUpdate = await writerModel.findByIdAndUpdate(id, { name, address })
         console.log(profileDataUpdate)
-        return res.status(200).json('Success');
+        return res.redirect('/profile?update_msg=Updated')
     } catch (error) {
         console.log(error);
+        return res.redirect('/profile?update_msg=failled+to+update')
     }
 };
 
 // Logout writer
 exports.logout = async (req, res) => {
     try {
-        res.clearCookie('accessToken', '', {maxAge: 0});
+        res.clearCookie('accessToken', '', { maxAge: 0 });
         res.redirect('/form');
     } catch (error) {
         console.log(error)
@@ -377,7 +409,7 @@ exports.forgotPassword = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-	res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -394,7 +426,7 @@ exports.resetForgotPassword = async (req, res) => {
         return res.status(400).json({ message: 'Check and click on the link sent to the email you provided and follow the instruction to reset your password' })
     };
 
-    
+
 
     try {
         const decode = jwt.verify(resetToken, process.env.JWT_SECRET)
@@ -406,7 +438,7 @@ exports.resetForgotPassword = async (req, res) => {
         writer.password = hashN
 
         await writer.save();
-        
+
         res.redirect('/api/form')
         // return res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {
@@ -417,10 +449,10 @@ exports.resetForgotPassword = async (req, res) => {
 
 // Change password for a logged in user
 exports.loggedInResetPassword = async (req, res) => {
-    const { id } = req.params;
-    const { oldPassword, newPassword } = req.body;
+    //const { id } = req.params;
+    const {id, oldPassword, newPassword } = req.body;
 
-    if (!oldPassword || !newPassword) {
+    if (!id || !oldPassword || !newPassword) {
         return res.status(400).json({ message: 'Old and New password field are required' })
     };
 

@@ -1,16 +1,55 @@
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/image/f.png" type="image/x-icon">
-    <link rel="stylesheet" href="/css/main.css">
-    {{!-- <link rel="stylesheet" href="../css/bootstrap.min.css"> --}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/image/f.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/main.css">
+  {{!--
+  <link rel="stylesheet" href="../css/bootstrap.min.css"> --}}
 
-    <title>{{metaTitle}}</title>
+  <title>{{metaTitle}}</title>
+  <style>
+    /* success and error message styling */
+    #sms {
+      top: 0;
+      position: fixed;
+      transition: opacity 1s ease-out;
+      height: 2rem;
+    }
+  </style>
 </head>
+
 <body>
-    <a href="/">Home</a>
-    <h2>{{title}}</h2>
-    {{{body}}}
-    <script src="/script/main.js"></script>
+  <div id="sms" style="display: none;">
+    {{#if success}}
+    <div style="background-color: green;" class="alert alert-success">{{success}}</div>
+    {{/if}}
+
+    {{#if errors}}
+    <div style="background-color: red;" class="alert alert-danger">{{errors}}</div>
+    {{/if}}
+
+    {{#if message}}
+    <div style="background-color: rgb(0, 68, 255);" class="alert alert-danger">{{message}}</div>
+    {{/if}}
+  </div>
+
+  <a href="/">Home</a>
+  <h2>{{title}}</h2>
+
+  {{{body}}}
+
+
+  <script src="/script/main.js"></script>
+
+  <script>
+    document.getElementById('sms').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('sms').style.opacity = 0;
+      setTimeout(() => {
+        document.getElementById('sms').style.display = 'none';
+      }, 1000); // wait for fade-out
+    }, 4000); // start fade-out after 4 seconds
+  </script>
 </body>
+
 </html>

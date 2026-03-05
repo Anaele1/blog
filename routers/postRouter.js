@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 // Create post route
-router.post('/create-post/:writerId', articleController.createPost);
+router.post('/create-post/', articleController.createPost);
 router.get('/get-posts/', articleController.getAllPosts);
 router.patch('/update-content/:id', articleController.updateContent);
 router.get('/post-per-writer/:writerId', articleController.postsByAWriter);

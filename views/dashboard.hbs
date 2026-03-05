@@ -1,7 +1,257 @@
-    <a href="/profile">Profile</a>
+    <style>
+  
+ /* COLUNM METHOD */ 
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.grid-container>div {
+  width: 100%;
+}
+
+.header { background-color: #f8f9fa; padding: 5px; display: flex; justify-content: space-between;}
+.content { background-color: #e9ecef; padding: 10px; width: 100%;}
+.footer { background-color: gray; color: white; display: flex; padding: 10px; justify-content: space-between;}
+
+li {
+  list-style: none;
+}
+  
+a {
+  text-decoration: none;
+}
+  
+#welcome {
+  margin: 1rem 3rem;
+}
+  
+.sideNav {
+  display: block;
+}
+  
+.navList {
+  padding: 2rem;
+}
+  
+#navMenu, #tmProfile, #close {
+    display: none;
+  }
+  
+#mainContent { 
+  display: flex;
+  gap: 1rem;
+}
+
+  .p-count {
+    width: 300px;
+    height: 130px;
+    background: white;
+    margin: 0 auto;
+  }
+  
+  .p-count>h3 {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .p-count>span {
+    margin: 5rem;
+  }
+  
+  .d-post {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+ }
+
+@media screen and (max-width: 600px) {
+  #dProfile, .sideNav {
+    display: none;
+  }
+  
+  #navMenu, #tmProfile, #close {
+    display: block;
+  }
+  
+  #close {
+    margin-left: 7.6rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    color: red;
+    font-weight: 700;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  
+  
+  .navList {
+            
+            background-color: white;
+            padding: 1rem;
+            margin: 0;
+            width: 40%;
+            height: 100vh;
+            position: absolute;
+            opacity: 0.9;
+            transition: display: 30s;
+        }
+  
+  .list {
+     padding: 0.5rem 0;
+  }
+  
+  .d-post {
+    gap: 5px;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #dProfile {
+    display: none;
+  }
+
+  .d-post {
+    gap: 5px;
+    display: block;
+  }
+}
+  
+  
+  
+
+  </style>
     
-    <h2>Welcome to {{title}}</h2>
-    <h1>Welcome, {{user.id}}!</h1>
-    <h1>Welcome, {{user.name}}!</h1>
-    <h1>Welcome, {{user.email}}!</h1>
-    <img src="{{user.image}}" alt="{{user.name}}" style="max-width: 150px;">
+<div class="grid-container">
+  
+  <div class="header"> 
+      <img src="" alt="Logo">
+      <div>Notification</div>
+      <a href="/profile" id="dProfile"> <img style="width: 50px; height: 50px; border-radius: 3rem;" src="{{user.image}}" alt="{{user.name}}"> </a>
+  </div>
+  
+  <div id="mainContent" class="content">
+    <div id="navShow" class="sideNav">
+      <ul class="navList" id="lists">
+        <span id="close">&times</span>
+        <li id="tmProfile"> <a href="#" class="list">Profile</a> </li>
+        <li> <a href="createPost.html" class="list">Create Post</a> </li>
+        <li> <a href="post.html" class="list">Posts</a> </li>
+        <li> <a href="feeds.html" class="list">Feeds</a> </li>
+      </ul>
+    </div>
+    
+  
+  <div class="content">
+    <button id="navMenu">MENU</button>
+    
+    <marquee style="margin-top: 12px; color: brown"> Your steady posting can attract works for you and keep you open to learn and teach new things</marquee>
+    
+    <div id="welcome">
+      <i>WELCOME</i> <b>{{user.name}}</b>
+    </div>
+    
+    <div class="d-post">
+      
+      <div class="p-count">
+        <h3>Published Posts</h3>
+        <span>NIL</span>
+      </div>
+      
+      <div  class="p-count">
+        <h3>Unpublished Posts</h3>
+        <span>NIL</span>
+      </div>
+      
+    </div>
+    
+    <div>
+      <div>Newly Published Post</div>
+    </div>
+ 
+  </div>
+</div>
+  <form action="/api/post/create-post" method="POST">
+    <h1>Create Post</h1>
+    <input type="hidden" value="{{user.id}}" name="writerId" required>
+    <input type="text" name="title" placeholder="Enter Title">
+    <input type="text" name="keywrds" placeholder="Enter Keywords">
+    <textarea name="description" id=""></textarea>
+    <textarea name="content" id=""></textarea>
+    <textarea name="summary" id=""></textarea>
+    <button type="submit">Create</button>
+</form>
+  <div class="footer">
+    
+    <div id="atp">
+      <a href="#">About Us</a><br>
+      <a href="#">Terms & Conditions</a><br>
+      <a href="#">Privacy Policy</a>
+    </div>
+    
+    <div id="contacts">
+      <label>Address: ?</label><br>
+      <label>Email: ?</label><br>
+      <label>Phone: ?</label>
+    </div>
+    
+    <div id="socials">
+       <i class="fa fa-bars">1<a href="#"></a></i>
+       <i class="fa fa-bars">2<a href="#"></a></i>
+       <i class="fa fa-bars">3<a href="#"></a></i>
+    </div>
+
+  </div>
+</div>
+
+  <script>
+  // Store references to the elements for cleaner code
+        const navMenuButton = document.getElementById("navMenu");
+        const navShowElement = document.getElementById("navShow");
+
+        // Function to show the navigation menu
+        const showNav = (event) => {
+            // Stop the event from "bubbling up" to the bodys click listener
+            event.stopPropagation(); 
+            navShowElement.style.display = "block";
+        };
+
+        // Function to hide the navigation menu
+        const hideNav = () => {
+            navShowElement.style.display = "none";
+        };
+
+        // Add event listener to the button to show the menu
+        navMenuButton.addEventListener("click", showNav);
+
+        // Add event listener to the entire body to hide the menu
+        // document.body.addEventListener("click", hideNav);
+          
+         // Add event listener to hide the menu
+        document.getElementById('close').addEventListener("click", hideNav);
+
+
+        // Optional: Also hide the nav if a link *within* the nav is clicked
+        const navLinks = document.querySelectorAll('.list');
+        navLinks.forEach(link => {
+            link.addEventListener('click', hideNav);
+        });
+
+  
+  </script>
+  
+<!-- Responsive navigation script-->
+<script>
+/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>

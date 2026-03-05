@@ -2,10 +2,10 @@ const articleModel = require("../models/articleModel");
 
 // Create post
 exports.createPost = async (req, res) => {
-    const {writerId} = req.params;
-    const { title, description } = req.body;
+    const {writerId} = req.body;
+    const { title, description, keywrds, content, summary } = req.body;
     try {
-        if (!title || !description) {
+        if (!title || !description || !keywrds || !content || !summary) {
             console.log('Email or Password required')
             return res.status(401).json({ success: false, message: 'Email or Password required' })
         }
@@ -15,7 +15,7 @@ exports.createPost = async (req, res) => {
             return res.status(401).json({ success: false, message: `Post exist with title: '${title}'` })
         }
 
-        const newPost = new articleModel({ title, description, writerId })
+        const newPost = new articleModel({ title, description, keywrds, content, summary, writerId })
         const result = await newPost.save()
 
         return res.status(201).json({ success: true, message: `Post with title: '${title}' created successfully` })
@@ -30,8 +30,10 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
     try {
         const allPost = await articleModel.find()
-        const result = allPost;
-        return res.status(201).json({Message: 'POSTS', result}) 
+        const results = allPost.map(writer => writer.toObject());
+        //const results = allPost;
+        return res.render('index', { results})
+        //return res.status(201).json({Message: 'POSTS', result}) 
     } catch (error) {
         console.log(error);
         return res.status(401).json('failled to retrieve all posts')   

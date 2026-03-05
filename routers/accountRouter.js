@@ -4,6 +4,15 @@ const { tokenAuth, JWT } = require('../middlewares/auth');
 const upload = require('../config/multer');
 const router = express.Router();
 
+// Route to render the login page
+router.get('/res', (req, res) => {
+
+    // Pass the message to the view
+    res.render('res');
+});
+
+
+
 // Image Upload route
 router.post('/add', upload.single('image'), accountController.addImage);
 
@@ -44,7 +53,7 @@ router.put('/resetpassword/:resetToken', accountController.resetForgotPassword);
 router.post('/bio', accountController.bioDataChanges);
 
 // Change password for a logged in user route
-router.patch('/resetpassword/:id', accountController.loggedInResetPassword);
+router.post('/resetpassword', accountController.loggedInResetPassword);
 
 // Logout writer route
 router.get('/logout', accountController.logout);

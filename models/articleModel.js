@@ -6,7 +6,11 @@ const articleSchema = mongoose.Schema({
 
     description:{ type: String, required: true },
 
+    keywrds:{ type: String},
+
     content:{ type: String},
+
+    summary:{ type: String},
 
     writerId:{ type:mongoose.Schema.Types.ObjectId, ref: 'Writer', required: true }
 },{

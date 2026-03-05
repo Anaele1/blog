@@ -1,5 +1,5 @@
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -12,12 +12,18 @@ h3 {
     font-size: 25px;
 }
 
+.main {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 100vh;
+}
+
 .center {
     display: none;
 }
 
 .a-button {
-   
+
     width: 7rem;
     color: white;
     background: rgba(4, 131, 4, 0.658);
@@ -54,3 +60,46 @@ h3 {
     font-size: larger;
     box-sizing: border-box;
 }
+
+@media screen and (max-width: 900px) {
+ 
+.a-form {
+    background-color: rgb(238, 250, 246);
+    width: 500px;
+    margin: 0 auto;
+    padding: 1.2rem;
+    border: solid rgb(153, 153, 156) 2px;
+    border-radius: 7px;
+}
+
+.a-label {
+    margin-left: 1.2rem;
+    margin-top: 2rem;
+}
+
+.a-input {
+    width: 480px;
+    margin-left: 1.2rem;
+}
+
+}
+
+@media screen and (max-width: 600px) {
+
+.a-form {
+    background-color: rgb(238, 250, 246);
+    width: 390px;
+}
+
+.a-label {
+    margin-left: 0.8rem;
+    margin-top: 1rem;
+}
+
+.a-input {
+    width: 380px;
+    margin-left: 0.8rem;
+}
+
+}
+

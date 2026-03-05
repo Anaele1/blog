@@ -1,38 +1,504 @@
+<style>
+  
+  .pContainer {
+      display: flex; 
+      gap: 14rem;
+  }
+  
+  .fd {
+      border: 00.1px solid gray;
+      margin-top: 1rem;
+      padding: 8px;
+      border-radius: 5px;
+  }
+  
+  .fd>h3 {
+      padding-left: 0.5rem;
+      color: green;
+      margin-top: 2px;
+      /*border-bottom: 0.3px solid brown;*/
+  }
+  
+  .bios-h, #aboutMe>h3 {
+      border-bottom: 0.3px solid brown;
+  }
+  
+  button {
+    border: none;
+  }
+  
+  button[type="submit"] {
+    background: green;
+    font-size: 20px;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    margin: 1.5rem 0;
+}
+  
+  .cls {
+    color: brown; 
+    font-size: 25px;
+  }
+  
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+  
 
-    <h2>Welcome to {{title}}</h2>
-    <a href="/dashboard">Go to Dashboard</a>
-    <div>
-        <img src="{{user.image}}" alt="{{user.name}}" style="max-width: 150px;">
-        <form action="/add" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="{{user.id}}" required>
-                <input type="file" name="image" accept="image/*" required><br>
-            <button type="submit">Upload Image</button>
-        </form>
+  #details {
+    
+   /* display: grid;
+    grid-template-columns: 1fr 1fr;*/
+   
+  }
+  
+  .p-inputs {
+    width: 98%;
+    height: 3.5rem;
+    border: 1.5px solid whitesmoke;
+    border-radius: 15px;
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding: 20px;
+
+  }
+  
+  .accoutDelete {
+    background: whitesmoke;
+  }
+  
+  .accountDelete>#accountDeleteOpen {
+    border: none;
+    color: red;
+    border-radius: 1rem;
+    font-size: 25px;
+  }
+  
+  .blockQoute {
+    line-height: 3rem;
+    font-size: 20px;
+    text-align: justify;
+    
+  }
+  
+
+  #addressForm, #clsAddressForm, #showAccountDelete, #pswChange, #pswClose, #picClose{
+    display: none;
+  }
+  
+  .p-psw-change, .accountDelete, #picFor{
+    padding: 0.5rem;
+    /*background: whitesmoke;
+    margin: 1rem 2rem;*/
+  }
+  
+  #pswOpen {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  #pswChange {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  #pswChange>input {
+    margin-bottom: 1rem;
+    text-align: center;
+    padding: 3px;
+    height: 1.5rem;
+  }
+  
+  @media screen and (max-width: 600px) {
+   
+   .pContainer {
+       display: flex; 
+       gap: 5rem;
+   }
+   
+    #details {
+    display: block;
+   }
+    
+   .p-inputs {
+    height: 3.5rem;
+    margin-bottom: 1rem;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 20px;
+  }
+    
+ }
+  
+  
+  
+  /* PROFILE PICTURE STYLING */
+     .rofile-pic-container {
+    position: relative; /* Essential for positioning the button relative to the image */
+    width: 160px;       /* Adjust size as needed */
+    height: 160px;
+    border-radius: 3rem; /* Makes the container circular */
+    overflow: hidden;   /* Keeps the image within the container shape */
+    cursor: pointer;
+    background: ;
+}
+
+.rofile-pic {
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border-radius: 2rem;
+}
+
+.uload-button {
+    position: absolute; /* Positions the button relative to the container */
+    bottom: 5px;        /* Adjust position as needed */
+    right: 13px;
+    background-color: #007bff; /* Example blue background */
+    color: white;
+    border-radius: 50%; /* Makes the button circular */
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px; /* Centers the '+' vertically */
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.uload-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+  
+  .p-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #ccc;
+  }
+
+  #profilePic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  #picForm {
+    margin-top: 1rem;
+    display: none;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 10;
+  }
+
+  #picOpen {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #4CAF50;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+</style>
+<a href="/dashboard">Go to Dashboard</a>
+  <div id="grid-container">
+      
+   <!-- <div id="profileMain">
+      
+      <section>
+    <h1>Pic Upload</h1>
+    
+    <div style="display: none" class="profile-pic-container">
+    <!-- Image tag to display the profile picture 
+      <img src="pp.png" alt="Profile Picture" id="profilePic" class="profile-pic">
+
+    <!-- Label styled as the add(+) sign, linked to the file input --
+    <label for="fileInput" class="upload-button">+</label>
+
+    <!-- Hidden file input field --
+    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+</div>
+
+</section> -->
+    
+  <div class="pContainer" >
+  <div class="p-image">
+    <img id="profilePic" src="{{user.image}}" alt="{{user.name}}">
+    <b id="picOpen">+</b>
+  </div>
+  <li style="margin-top: 2.2rem; background: whitesmoke; list-style: none; border-radius: 1rem; font-size: 30px; padding: 1rem;">{{user.username}}</li>
+  </div>
+ 
+  <!-- Email -->
+ <li style="margin-top: 1rem; font-size: 20px; font-weight: 600; list-style: none;" class="email"><a>{{user.email}}</a>
+ </li>
+
+   <!-- Profile Image -->
+   <div id="picForm">
+    <h3>Change Profile Picture</h3>
+    <form action="/add" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="{{user.id}}" required>
+      <input type="file" name="image" id="profilePicInput" accept="image/*" required>
+      <button id="picUpload" type="submit" style="display: none;">Upload</button>
+    </form>
+    <button class="cls" id="picClose"><b>Close</b></button>
+  </div>
+  
+  <!-- About Me -->
+  <div style="text-align: justify;" class="fd" id="aboutMe">
+     <h3>Who I Am</h3>
+     <p>
+         Results-driven Full Stack Software Developer with 3 years of experience in designing, developing, and deploying scalable dynamic and static web applications.
+
+        Combining a strong foundation in Philosophy and Psychology with technical expertise in JavaScript, Node.js, React, Express.js, CSS, MySQL, MongoDB, and HTML.
+
+        Proven ability to deliver high-quality solutions, drive innovation, and collaborate with cross-functional teams.
+
+       Skilled in leveraging technical knowledge to create intuitive user experiences and drive business growth.
+     </p>
     </div>
+   
+   <!-- Bio Data -->   
+   <div class="fd" id="bios">
+     <h3 class="bios-h">Bio Data</h3>
+     <form id="details" action="" method="">
+       <input type="text" name="id" value="{{user.id}}" hidden>
+       
+       <label for="name">Name</label>
+       <input class="p-inputs" id="name" type="text" name="name" value="{{user.name}}">
+       
+       <label for="phone">Phone</label>
+       <input class="p-inputs" type="phone" name="phone" id="phone" value="Enter Phone Number" />
+       
+       <label for="dob">Date of Birth</label>
+       <input class="p-inputs" type="date" name="dob" id="" value="Enter D.O.B" placeholder="DOB" />
+       <button type="submit" id="submitBtn" style="display: none;">Update Changes</button>
+     </form>
+   </div>
+   
+   <!-- Address -->   
+   <div class="fd" id="address">
+     <h3 id="addressOpen" >Address</h3>
+     <form id="addressForm" action="" method=" " >
+         <input class="p-inputs" type="text" name="" id="" value="Enter Home Town/Resident" />
+        <input class="p-inputs" type="text" name="" id="" value="Enter City" />
+        <input class="p-inputs" type="text" name="" id="" value="Enter State" />
+        <input class="p-inputs" type="text" name="" id="" value="Enter Nationality" />
+         <button type="submit" id="submitBtn" style="display: none;">Update Changes</button>
+     </form>
+     <button class="cls" id="clsAddressForm"><b> Close </b></button>
+  </div>
+   
+   <!-- Education -->
+   <div class="fd" id="education">
+    <h3 onclick="onDevelopment()">Education</h3>
+   </div>
 
-    <div>
-        <label for="username">User-Name</label>
-        <input type="text" name="username" value="{{user.username}}" disabled>
-        <form action="/bio" method="POST">
-            <input type="hidden" name="id" value="{{user.id}}" required>
+   <!-- Experience -->
+   <div class="fd" id="experience">
+     <h3  onclick="onDevelopment()">Works and Experiences</h3>
+   </div>
+   
+   <!-- Social Media -->
+   <div class="fd" id="socials">
+     <h3 onclick="onDevelopment()">Socials/Websites</h3>
+   </div>
+      
+   <!-- Works and Projects -->
+   <div class="fd" id="worksProjects">
+     <h3 onclick="onDevelopment()">Works and Projects</h3>
+   </div>
+   
+   <!-- Password Change -->
+   <div class="p-psw-change">
+      <button onclick="PswOpen()" id="pswOpen">Change Password</button>
+      <form id="pswChange" id="pswChange" action="/resetpassword" method="POST">
+      <input type="text" name="id" value="{{user.id}}" hidden>
+          <input name="oldPassword" placeholder="Enter Your Old Password">
+          <input name="newPassword" placeholder="Create New Password"><br>
+          <button type="submit">Submit</button>
+      </form>
+      <button class="cls" onclick="PswClose()" id="pswClose"><b> Close </b></button>
+   </div>
+   
+   <!-- Delete Account -->
+   <div class="delete accountDelete">
+      <button id="accountDeleteOpen">Delete Account</button>
+      <div class="blockQoute" id="showAccountDelete"> 
+          Are you sure you want to delete your account?
+         <form action="/delete" method="POST">
+            <input type="text" name="id" value="{{user.id}}" hidden>
+           If yes<button type="submit" style="background: red; color: green;">Confirm</button><br>
+          </form>if no <button class="cls" id="closeDelete">Cancel</button>
+        </div>
+      </div>
+      
+  </div>
+  <a href="/logout">Logout</a>
+  <!-- Profile picture script -->
+  <script>
+  const fileInput = document.getElementById('profilePicInput');
+  const uploadButton = document.getElementById('picUpload');
+  const picOpen = document.getElementById('picOpen');
+  const picForm = document.getElementById('picForm');
+  const picClose = document.getElementById('picClose');
 
-            <label for="email">Email</label>
-            <input type="email" name="email" value="{{user.email}}">
+  fileInput.addEventListener('change', function() {
+    if (this.files.length > 0) {
+      uploadButton.style.display = 'block';
+    } else {
+      uploadButton.style.display = 'none';
+    }
+  });
 
-            <label for="name">Name</label>
-            <input type="text" name="name" value="{{user.name}}">
+  picOpen.addEventListener('click', function() {
+    picForm.style.display = 'block';
+  });
 
-            <label for="address">Address</label>
-            <input type="text" name="address" value="{{user.address}}">
+  picClose.addEventListener('click', function(e) {
+    e.preventDefault();
+    picForm.style.display = 'none';
+  });
+</script>
+  
+  
+  <!-- Bio update Script -->
+  <script>
+  const nameInput = document.querySelector('input[name="name"]');
+  const addressInput = document.querySelector('input[name="address"]');
+  const submitBtn = document.getElementById('submitBtn');
 
-            <button type="submit">Upload Changes</button>
-        </form>
-    </div>
 
-    <div>
-        <form action="/delete" method="POST">
-            <input type="hidden" name="id" value="{{user.id}}" required>
-            <button type="submit">Delete Account</button>
-        </form>
-    </div>
-    <a href="/logout">Logout</a>
+  function checkFocus() {
+    if (document.activeElement === nameInput || document.activeElement === addressInput) {
+      submitBtn.style.display = 'block';
+    } else {
+      submitBtn.style.display = 'none';
+    }
+  }
+
+  nameInput.addEventListener('focus', checkFocus);
+  addressInput.addEventListener('focus', checkFocus);
+  nameInput.addEventListener('blur', checkFocus);
+  addressInput.addEventListener('blur', checkFocus);
+  
+  
+</script>
+  
+  <!-- Profile picture upload script -->
+  <script>
+     profilePicOpen = document.getElementById('picOpen');
+     profilePicForm = document.getElementById('picForm');
+     profilePicClose = document.getElementById('picClose');
+  
+     profilePicOpen.addEventListener('click', () => {
+       profilePicForm.style.display = 'block';
+       profilePicClose.style.display = 'block';
+     });
+  
+     profilePicClose.addEventListener('click', () => {
+       profilePicForm.style.display = 'none';
+       profilePicClose.style.display = 'none';
+     });
+  
+  </script>
+
+  <!-- Delete account script --> 
+  <script>
+     deleteOpen = document.getElementById('accountDeleteOpen');
+     deleteReady = document.getElementById('showAccountDelete');
+     CloseDelete = document.getElementById('closeDelete');
+     
+     deleteOpen.addEventListener('click', () => {
+       deleteReady.style.display = 'block';
+     });
+
+     CloseDelete.addEventListener('click', () => {
+       deleteReady.style.display = 'none';
+     });
+  </script>
+
+  <!-- Password change script -->
+  <script>
+  OpenPswChange = document.getElementById('pswOpen');
+  PswChangeShow = document.getElementById('pswChange');
+  ClosePswChange = document.getElementById('pswClose');
+
+function PswOpen() {
+    PswChangeShow.style.display = 'block';
+    ClosePswChange.style.display = 'block';
+}
+
+function PswClose() {
+    PswChangeShow.style.display = 'none';
+    ClosePswChange.style.display = 'none';
+}
+</script>
+
+  <!-- Message for features under development -->
+  <script>
+function onDevelopment() {
+  alert('This feature is undergoing development ..., please check back later')
+}
+</script>
+
+  <!-- Address script -->
+  <script>
+      const AddressOpen = document.getElementById('addressOpen');
+      const AddressForm = document.getElementById('addressForm');
+      const CloseAddressForm = document.getElementById('clsAddressForm');
+      
+      AddressOpen.addEventListener('click', () => {
+          AddressForm.style.display = "block";
+          AddressOpen.style.borderBottom = "0.3px solid brown";
+          CloseAddressForm.style.display = "block";
+      });
+      
+      CloseAddressForm.addEventListener('click', () => {
+          AddressForm.style.display = "none";
+          AddressOpen.style.borderBottom = "none";
+          CloseAddressForm.style.display = "none";
+      });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
