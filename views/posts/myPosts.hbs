@@ -1,0 +1,173 @@
+<style>
+  body {
+    font-size: 20px;
+  }
+  
+  li {
+    list-style: none;
+  }
+  
+  /* public/css/style.css */
+.post-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.writer-info {
+  margin-top: 00.5rem;
+  padding-left: 2rem;
+  border-top: 1px dashed #ccc;
+  font-size: 00.9rem;
+  border: 1px solid white;
+  border-radius: 1rem;
+}
+  .main {
+    dislay: grid;
+    grid-template-colunms: 1fr;
+    padding: 0.8rem;
+  }
+  
+  .viewPost {
+    background: whitesmoke;
+    /*padding: 1rem;*/
+    border-radius: 1rem;
+    font-size: 25px;
+  }
+  
+  .post {
+    margin-bottom: 0.3rem;
+    /*padding-left: 1rem;
+    padding-top: 1rem;*/
+    padding:0.5rem;
+  }
+  
+ /* #post-title {
+     background: white;
+  }*/
+  
+  #post-dscrb {
+    line-height: 22px;
+  }
+  
+ #post-kywrds {
+     color: brown;
+  }
+  
+  #post-body {
+    padding: 3px;
+  }
+  
+  .p-l-h {
+    text-align: justify;
+    line-height: 30px;
+  }
+  
+  #post-sum {
+     font-weight: 500;
+  }
+  
+  .relWrks {
+      border: none
+}
+
+  </style>
+<div class="main">
+
+{{title}}
+{{> writersNavs}}
+<h1>Here is my posts</h1>
+
+  <div class="viewPost">
+    <div class="post" id="post-title">
+      
+      <!-- Post Title -->
+      <li>How do I implement logout functionality with stateless JWT tokens?</li>
+      
+      <p>
+        <div style="line-height: 2rem"> 
+           <i>Written By:</i> <strong>Venedith Sullip</strong>
+           <li style="font-size: 17px; color: green;">12 Feb 2026</li>
+        </div>
+      </p>
+      
+    </div>
+    
+    <div class="post" id="post-kywrds"><i> Refresh Token, Access Token, Header refresh, Authentication </i></div>
+    
+    <div class="post p-l-h" id="post-dscrb">
+      <em>
+        Don't refresh the token too often, as this can add unnecessary overhead. But don't wait too long either, or the user might experience interruptions. Finding the right balance is important. This often involves setting a reasonable "grace period" for token refreshes, perhaps a few minutes before expiration, to ensure a smooth transition.
+      </em>
+    </div>
+    
+    <div class="post p-l-h" id="post-body">
+      Many organizations use a centralized authentication server to manage user identities and enforce consistent security policies across multiple applications. This approach simplifies logout management and improves overall security posture.
+
+      So, which strategy is best? It depends on your specific needs and constraints. Token blacklisting provides immediate logout but introduces state. Short-lived tokens reduce the window of vulnerability but require frequent refresh. Refresh token rotation mitigates the impact of compromised refresh tokens but adds complexity. And a centralized authentication server simplifies management but can introduce performance bottlenecks.
+
+      Next up, we'll look at how to handle token storage and transmission securely.
+
+      Implementation Examples and Code Snippets
+      Okay, so we've talked about the what and the why of logout with jwt. Now, let's get our hands dirty with some actual code. 'Cause let's face it, theory is cool, but code is where the rubber meets the road, or something like that.
+      So, you wanna blacklist some tokens? Let's look at how you might do it in Node.js, 'cause why not?
+
+      First, you'll need a database. something like Redis works great because it's fast. You'll need to store the invalidated tokens.
+      <br> <code>const redis = require('redis');
+      const jwt = require('jsonwebtoken');
+
+      const redisClient = redis.createClient();
+
+
+      async function isTokenBlacklisted(token) {
+        return await redisClient.exists(blacklist:<span class="hljs-subst">${token}</span>);
+      }
+
+
+      async function blacklistToken(token, expiration) {
+        // Calculate remaining time until expiration in seconds
+      const ttl = Math.floor((expiration - Date.now()) / 1000);
+
+
+      if (ttl > 0) {
+      await redisClient.set(blacklist:<span class="hljs-subst">${token}</span>, 'true', 'EX', ttl);
+      } else {
+        console.warn('Token already expired.');
+      }
+    }
+  </code>
+      
+    </div>
+    <div class="post p-l-h" id="post-sum">
+      The best approach really boils down to what you need most. What are you optimizing for? Security? User Experience? Scalability? There's no silver bullet, so weigh your options, test 'em out, and see what clicks for your particular setup. Ultimately, by carefully considering these strategies, you can navigate the complexities of stateless jwt logout and provide a secure, user-friendly experience.
+    </div>
+    
+    <div class="post-analytic">
+      <ul>
+        <li>Comments (?)</li>
+        <li>Stars (?)</li>
+        <li>Likes (?)</li>
+        <li>Dislikes (?)</li>
+      </ul>
+    </div>
+    
+    <div class="writer-info">
+        <p>Written by: <strong>Venedith Sullip</strong></p>
+        <p>Email: <a href="mailto:{{writer.email}}">Vesullip@gmail.com</a></p>
+    </div>
+    
+    <div class="relatedWorks" style="background: grey;">
+      <form>
+        <input type="text"  id="postId" value="postId" hidden >
+        <input type"text" value"articleName" hidden>
+        <button class="relWrks" type="submit">Post Title</button>
+      </form>
+       <span> Writer Name</span>
+    </div>
+    
+  </div>
+</div>
+
+  {{> footer}}

@@ -88,7 +88,7 @@ h3 {
 
 .a-form {
     background-color: rgb(238, 250, 246);
-    width: 390px;
+    width: 320px;
 }
 
 .a-label {
@@ -97,7 +97,7 @@ h3 {
 }
 
 .a-input {
-    width: 380px;
+    width: 300px;
     margin-left: 0.8rem;
 }
 

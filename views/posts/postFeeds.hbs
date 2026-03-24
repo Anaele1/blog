@@ -1,0 +1,26 @@
+<h1>Here is all posts</h1>
+{{title}}
+{{!-- {{> writersNavs}} --}}
+<ul>
+        <h1>Articles2</h1>
+        {{#each results}}
+            <li>Title: {{this.title}}</li>
+            <li>Name: {{this.writerId.username}}</li>
+            <li>Description: {{this.description}}</li>
+            <hr>
+            <br>       
+        {{/each}}
+    </ul>
+
+<h1>Articles</h1>
+{{#each results}}
+    <form action="/api/post/get-posts" method="POST">
+        <input type="text" name="writerId" hidden>
+        <input type="text" name="title" value="{{this.title}}" >
+        <span>{{this.writerId.username}}</span>
+        <button type="submit">View This Post</button>
+    </form>  
+{{/each}}
+ 
+ {{!-- Footer --}}
+ <div>{{> footer}}</div>

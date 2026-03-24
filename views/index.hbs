@@ -1,38 +1,66 @@
+<style>
+li{
+  list-style: none;
+}
 
-    <a href="/form">Manage your Account</a><br><br>
-    <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-5 shadow-sm" id="pillNav" role="tablist" style="--bs-nav-link-color: var(--bs-white); --bs-nav-pills-link-active-color: var(--bs-primary); --bs-nav-pills-link-active-bg: var(--bs-white);">
-        <li class="nav-items" role="presentation">
-            <button class="nav-link active rounded-5" id="home-tab2" data-bs-toggle="tab" type="button" role="tab" aria-selected="true" >Home</button>
-        </li>
-        <li>
-            <button class="nav-link rounded-5" id="contact-tab2" data-bs-toggle="tab" type="button" role="tab" aria-selected="false">Contact</button>
-        </li>
-        <li>
-            <button class="nav-link rounded-5" id="profile-tab2" data-bs-toggle="tab" type="button" role="tab" aria-selected="false">Profile</button>
-        </li>
-    </ul>
+#welcomeDisplay {
+  text-align: justify;
+  opacity: 0.8;
+  margin: 0 auto;
+  padding: 2rem;
+  transition: background-color 7s;
+  width: 80%;
+  border: 2px solid black;
+
+}
+</style>
+  <div>
+    <nav>
+      <ul class="" style="display: flex; gap: 2rem; font-size: 30px; color: green; padding: 1rem;">
+          <li class=""> <a href="/form">Sign-Up</a>/<a href="/form">Sign-In</a></li>
+          <li class=""> <a href="/about">About-Us</a></li>
+          <li> <a href="/api/post/get-posts">View Posts</a></li>
+      </ul>
+    </nav>
     
-    <ul>
-        {{#each result}}
-            <li>Name: {{this.name}}</li>
-            <li>Email: {{this.email}}</li>
-            <li>Address: {{this.address}}</li>
-            <hr>
-            <br>       
-        {{/each}}
-    </ul>
+    <div id="welcomeDisplay">
+      <h1 style="text-align: center">WELCOME! WE WISH YOU GREATNESS..</h1>
+      <p style="margin-bottom: 2rem; font-size: 20px;">
+        This site is undergoing development.
+        <b>I am testing it.</b> Please feel free and thoroughly go through it and make your recommendations.
+      </p>
+    </div>
+    
+  </div>
+{{!-- Footer Section --}}
+{{> footer}}
 
-    <ul>
-        <h1>Articles</h1>
-        {{#each results}}
-            <li>Name: {{this.writerId.username}}</li>
-            <li>Title: {{this.title}}</li>
-            <li>Description: {{this.description}}</li>
-            <li>Body: {{this.content}}</li>
-            <li>Summary: {{this.summary}}</li>
-            <hr>
-            <br>       
-        {{/each}}
-    </ul>
- 
-    <script src="../js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+// Get the element
+const welcome = document.getElementById('welcomeDisplay');
+
+// Define the colors
+const colors = [
+  { background: 'black', text: 'purple', borders: '4px solid purple' },
+  { background: 'purple', text: 'pink', borders: ' 4px solid pink' },
+  { background: 'pink', text: 'black', borders: '4px solid black' }
+];
+let currentColorIndex = 0;
+
+// Function to change the color
+function changeColor() {
+  welcome.style.backgroundColor = colors[currentColorIndex].background;
+  welcome.style.color = colors[currentColorIndex].text;
+  welcome.style.border = colors[currentColorIndex].borders;
+  currentColorIndex = (currentColorIndex + 1) % colors.length;
+}
+
+// Change the color every 10 seconds
+setInterval(changeColor, 10000);
+
+// Initial color change
+changeColor();
+
+</script>

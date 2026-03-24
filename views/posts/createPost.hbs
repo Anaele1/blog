@@ -1,0 +1,154 @@
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  
+    form > div {
+      margin-bottom: 20px;
+      position: relative;
+    }
+  
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  
+    textarea {
+      height: 100px;
+    }
+  
+    span.edit {
+      
+      /* MAKING IT APPEAR TOP */
+      /*position: absolute;
+      right: 0;
+      top: 0;*/
+      
+      background: #f0f0f0;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  
+    span.edit:hover {
+      background: #e0e0e0;
+    }
+    .actions {
+      /* MAKING IT APPEAR TOP */
+      /* position: absolute;
+      right: 0;
+      top: 0; */
+      display: flex;
+      gap: 5px;
+    }
+    button[type="submit"] {
+      background: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button[type="button"] {
+      background: #f44336;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+</style>
+{{title}}
+{{> writersNavs}}
+
+  <form id="postForm">
+    <input type="hidden" value="id" name="id">
+
+    <div>
+      <label for="title">Title</label>
+      <input type="text" name="title" placeholder="Give your post a title" readonly>
+      <span class="edit" onclick="activateField('title')">Edit</span>
+      <div class="actions hidden" id="titleActions">
+        <button type="button" onclick="cancelEdit('title')">Cancel</button>
+        <button type="submit" form="postForm">Create Post</button>
+      </div>
+    </div>
+
+    <div>
+      <label for="keywords">Keywords</label>
+      <input type="text" name="keywords" placeholder="Enter keywords in your post" readonly>
+      <span class="edit" onclick="activateField('keywords')">Edit</span>
+      <div class="actions hidden" id="keywordsActions">
+        <button type="button" onclick="cancelEdit('keywords')">Cancel</button>
+        <button type="submit" form="postForm">Create Post</button>
+      </div>
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea name="description" placeholder="Write little description of your post" readonly></textarea>
+      <span class="edit" onclick="activateField('description')">Edit</span>
+      <div class="actions hidden" id="descriptionActions">
+        <button type="button" onclick="cancelEdit('description')">Cancel</button>
+        <button type="submit" form="postForm">Create Post</button>
+      </div>
+    </div>
+
+    <div>
+      <label for="content">Content</label>
+      <textarea id="content" name="content" placeholder="Post body" readonly></textarea>
+      <span class="edit" onclick="activateField('content')">Edit</span>
+      <div class="actions hidden" id="contentActions">
+        <button type="button" onclick="cancelEdit('content')">Cancel</button>
+        <button type="submit" form="postForm">Create Post</button>
+      </div>
+    </div>
+
+    <div>
+      <label for="summary">Summary</label>
+      <textarea name="summary" placeholder="Summarize your post" readonly></textarea>
+      <span class="edit" onclick="activateField('summary')">Edit</span>
+      <div class="actions hidden" id="summaryActions">
+        <button type="button" onclick="cancelEdit('summary')">Cancel</button>
+        <button type="submit" form="postForm">Create Post</button>
+      </div>
+    </div>
+  </form>
+
+  <script>
+    function activateField(fieldName) {
+      const field = document.querySelector(`[name="${fieldName}"]`);
+      const editSpan = field.nextElementSibling;
+      const actionsDiv = document.getElementById(`${fieldName}Actions`);
+
+      field.removeAttribute('readonly');
+      field.focus();
+      editSpan.classList.add('hidden');
+      actionsDiv.classList.remove('hidden');
+    }
+
+    function cancelEdit(fieldName) {
+      const field = document.querySelector(`[name="${fieldName}"]`);
+      const editSpan = field.nextElementSibling;
+      const actionsDiv = document.getElementById(`${fieldName}Actions`);
+
+      field.setAttribute('readonly', 'readonly');
+      editSpan.classList.remove('hidden');
+      actionsDiv.classList.add('hidden');
+    }
+  </script>

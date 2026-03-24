@@ -6,6 +6,11 @@ const { userDetailsOnTemplate } = require("../utils/templateConsistency");
 const articleModel = require("../models/articleModel");
 const salts = 12;
 
+// About
+exports.about = (req, res) => {
+    res.render('about', { title: 'About Page', metaTitle: 'about' });
+};
+
 // Add image
 exports.addImage = async (req, res) => {
     try {

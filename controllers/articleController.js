@@ -26,13 +26,51 @@ exports.createPost = async (req, res) => {
 
 };
 
+// Get Create post
+exports.getCreatePost = async (req, res) => {
+    try {
+        res.render('posts/createPost', { title: 'Create Post', metaTitle: 'create-post' });
+    } catch (error) {
+        console.log(error);  
+    }
+}
+
+// Get Create post
+exports.eachUserPostsView = async (req, res) => {
+    try {
+        const userPosts = await articleModel.find()
+        const results = userPosts.map(writer => writer.toObject());
+        //const results = allPost;
+        return res.render('posts/myPosts', { results})
+        //return res.status(201).json({Message: 'POSTS', result}) 
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json('failled to retrieve all posts')   
+    }
+}
+
 // Retrieve posts
 exports.getAllPosts = async (req, res) => {
     try {
-        const allPost = await articleModel.find()
+        const allPost = await articleModel.find().populate('writerId');
         const results = allPost.map(writer => writer.toObject());
         //const results = allPost;
-        return res.render('index', { results})
+        return res.render('posts/postFeeds', { results})
+        //return res.status(201).json({Message: 'POSTS', result}) 
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json('failled to retrieve all posts')   
+    }
+};
+
+// Retrieve posts
+exports.postViewPerOne = async (req, res) => {
+    const {writerId, title} = req.body;
+    try {
+        const allPost = await articleModel.find(writerId, title).populate('writerId');
+        const results = allPost.map(writer => writer.toObject());
+        //const results = allPost;
+        return res.render('posts/postFeeds', { results})
         //return res.status(201).json({Message: 'POSTS', result}) 
     } catch (error) {
         console.log(error);

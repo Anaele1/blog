@@ -1,0 +1,14 @@
+<h1>Posts</h1>
+
+<ul>
+        <h1>Articles</h1>
+        {{#each results}}
+            <li>Name: {{this.writerId.username}}</li>
+            <li>Title: {{this.title}}</li>
+            <li>Description: {{this.description}}</li>
+            <li>Body: {{this.content}}</li>
+            <li>Summary: {{this.summary}}</li>
+            <hr>
+            <br>       
+        {{/each}}
+    </ul>

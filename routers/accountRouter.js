@@ -11,7 +11,8 @@ router.get('/res', (req, res) => {
     res.render('res');
 });
 
-
+// Form route
+router.get('/about', accountController.about);
 
 // Image Upload route
 router.post('/add', upload.single('image'), accountController.addImage);
