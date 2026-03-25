@@ -30,8 +30,7 @@ exports.addImage = async (req, res) => {
         const imagePath = req.file.path || req.file.url; // URL path for cloudinary storage (production/deployment purpose)
 
         const writerImage = await writerModel.findByIdAndUpdate(id, { image: imagePath });
-        return res.status(200).redirect(/profile // { success: 'profile picture uploaded successfully'  message: writerImage
- });
+        return res.status(200).redirect(/profile);
 
     } catch (err) {
         console.error(err);
