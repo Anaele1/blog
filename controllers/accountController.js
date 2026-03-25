@@ -34,7 +34,7 @@ exports.addImage = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        // return res.redirect('/api/profile');
+        // return res.redirect('/profile');
         return res.status(500)
     }
 }
