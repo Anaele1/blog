@@ -30,7 +30,8 @@ exports.addImage = async (req, res) => {
         const imagePath = req.file.path || req.file.url; // URL path for cloudinary storage (production/deployment purpose)
 
         const writerImage = await writerModel.findByIdAndUpdate(id, { image: imagePath });
-        return res.status(200).json({ success: true, message: writerImage });
+        return res.redirect('/profile?success_msg=Profile+picture+updated+successfully');
+        //return res.status(200).json({ success: true, message: writerImage });
 
     } catch (err) {
         console.error(err);
@@ -47,14 +48,14 @@ exports.forms = (req, res) => {
 // Dashboard
 exports.dashboard = (req, res) => {
     const user = userDetailsOnTemplate(req.user);
-    const errorMessage = req.query.success_msg;
-    res.render('dashboard', { title: 'Dashboard', metaTitle: 'dashboard', message: errorMessage, user });
+    const Message = req.query.success_msg;
+    res.render('dashboard', { title: 'Dashboard', metaTitle: 'dashboard', message: Message, user });
 };
 
 // Profile
 exports.profile = (req, res) => {
     const user = userDetailsOnTemplate(req.user);
-    const updateMessage = req.query.update_msg;
+    const updateMessage = req.query.success_msg;
     res.render('profile', { title: 'Profile', metaTitle: 'profile', message: updateMessage, user });
 };
 
@@ -87,7 +88,7 @@ exports.signup = async (req, res) => {
         result.password = undefined
 
         return res.status(200).render('forms', {
-            success: `Account created successfully ${email}`,
+            message: `Account created successfully ${email}`,
         });// return res.status(201).json({ success: true, message: `Account created for the Writer with this email ${email}` })
     } catch (error) {
         console.log(error)

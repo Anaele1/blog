@@ -78,6 +78,21 @@
 
 {{title}}
 {{> writersNavs}}
+
+<h1>My Posts</h1>
+{{#each results}}
+    <form action="/api/post/get-posts" method="POST">
+        <input type="text" name="articleId" hidden>
+        <input type="text" name="title" value="{{this.title}}" >
+        <li>Name: {{this.writerId.email}}</li>
+        <li>UserName: {{this.writerId.username}}</li>
+            <li>Description: {{this.description}}</li>
+            <li>Id: {{this._id}}</li>
+        <button type="submit">View This Post</button>
+    </form>  
+    <li> <a href="/api/post/each-post/:{{this._id}}" class="list">View in details{{this._id}}</a> </li>
+{{/each}}
+
 <h1>Here is my posts</h1>
 
   <div class="viewPost">

@@ -1,14 +1,235 @@
 <h1>Posts</h1>
 
-<ul>
-        <h1>Articles</h1>
-        {{#each results}}
-            <li>Name: {{this.writerId.username}}</li>
-            <li>Title: {{this.title}}</li>
-            <li>Description: {{this.description}}</li>
-            <li>Body: {{this.content}}</li>
-            <li>Summary: {{this.summary}}</li>
-            <hr>
-            <br>       
-        {{/each}}
-    </ul>
+<style>
+    :root {
+        --primary: #4a6fa5;
+        --secondary: #166088;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --code-bg: #1e1e1e;
+        --code-text: #d4d4d4;
+        --border: #dee2e6;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        background: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .post {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    #post-title {
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 15px;
+    }
+
+    #post-title li {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 0;
+        color: var(--secondary);
+    }
+
+    .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .post-meta i {
+        margin-right: 5px;
+    }
+
+    #post-keywords {
+        font-style: italic;
+        color: var(--primary);
+        padding: 10px 0;
+    }
+
+    #post-body {
+        min-height: 200px;
+        border: 1px dashed var(--border);
+        border-radius: 5px;
+        padding: 15px;
+        position: relative;
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .toolbar button {
+        background: var(--light);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .toolbar button:hover {
+        background: var(--primary);
+        color: white;
+    }
+
+    .code-block {
+        background: var(--code-bg);
+        color: var(--code-text);
+        padding: 15px;
+        border-radius: 5px;
+        font-family: 'Consolas', monospace;
+        margin: 10px 0;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .code-block::before {
+        content: "Code";
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: var(--secondary);
+        color: white;
+        padding: 2px 10px;
+        font-size: 12px;
+        border-radius: 0 0 0 5px;
+    }
+
+    .writer-info {
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border);
+    }
+
+    .writer-info p {
+        margin: 5px 0;
+    }
+
+    .writer-info a {
+        color: var(--primary);
+        text-decoration: none;
+    }
+
+    .post-analytic {
+        display: flex;
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    .post-analytic li {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+</style>
+
+<div class="container">
+    
+    <div class="post" id="post-title">
+        <li>Title: {{results.title}}</li>
+        <div class="post-meta">
+            <span><i>Written By:</i> <strong>{{results.writerId.username}}</strong></span>
+            <span><i class="far fa-calendar-alt"></i>Created At: {{results.createdAt}}</span><br>
+            <span><i class="far fa-calendar-alt"></i>Last Updated: {{results.updatedAt}}</span>
+        </div>
+    </div>
+
+    <div class="post" id="post-keywords">
+        <i>KeyWords{{results.kywrds}}</i>
+    </div>
+
+    <div class="post" id="post-body">
+        <div class="toolbar">
+            <button onclick="insertParagraph()" title="Insert Paragraph"><i class="fas fa-paragraph"></i></button>
+            <button onclick="insertImage()" title="Insert Image"><i class="fas fa-image"></i></button>
+            <button onclick="insertLink()" title="Insert Link"><i class="fas fa-link"></i></button>
+            <button onclick="insertCode()" title="Insert Code"><i class="fas fa-code"></i></button>
+        </div>
+        <div class="content post" contenteditable="true">
+            <li>Content</li>
+            {{results.content}}
+        </div>
+    </div>
+
+    <div class="post-analytic">
+        <ul>
+            <li><i class="far fa-comment"></i> Comments (0)</li>
+            <li><i class="far fa-star"></i> Stars (0)</li>
+            <li><i class="far fa-thumbs-up"></i> Likes (0)</li>
+            <li><i class="far fa-thumbs-down"></i> Dislikes (0)</li>
+        </ul>
+    </div>
+
+    <div class="writer-info">
+        <p>Written by: <strong>{{results.writerId.name}}</strong></p>
+        <p>Email: <a href="mailto:Vesullip@gmail.com">{{results.writerId.email}}</a></p>
+    </div>
+</div>
+
+<script>
+    function insertParagraph() {
+        const content = document.querySelector('.content');
+        const p = document.createElement('p');
+        p.innerHTML = '<br>New paragraph...';
+        content.appendChild(p);
+        p.focus();
+    }
+
+    function insertImage() {
+        const url = prompt('Enter image URL:');
+        if (url) {
+            const content = document.querySelector('.content');
+            const img = document.createElement('img');
+            img.src = url;
+            img.style.maxWidth = '100%';
+            img.style.margin = '10px 0';
+            content.appendChild(img);
+        }
+    }
+
+    function insertLink() {
+        const url = prompt('Enter link URL:');
+        const text = prompt('Enter link text:');
+        if (url && text) {
+            const content = document.querySelector('.content');
+            const a = document.createElement('a');
+            a.href = url;
+            a.textContent = text;
+            a.style.color = 'var(--primary)';
+            a.style.textDecoration = 'none';
+            content.appendChild(a);
+        }
+    }
+
+    function insertCode() {
+        const content = document.querySelector('.content');
+        const code = document.createElement('div');
+        code.className = 'code-block';
+        code.contentEditable = 'true';
+        code.innerHTML = '<br>// Your code here...';
+        content.appendChild(code);
+        code.focus();
+    }
+</script>

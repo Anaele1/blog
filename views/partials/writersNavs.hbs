@@ -1,9 +1,17 @@
 <div id="navShow" class="sideNav">
       <ul class="navList" id="lists">
         <span id="close">&times</span>
-        <li id="tmProfile"> <a href="#" class="list">Profile</a> </li>
+        <li id="tmProfile"> <a href="/profile" class="list">Profile</a> </li>
         <li> <a href="/api/post/get-create-post" class="list">Create Post</a> </li>
-        <li> <a href="/api/post/my-posts" class="list">Posts</a> </li>
         <li> <a href="/api/post/get-posts" class="list">Feeds</a> </li>
+        <li> <a href="/api/post/post-per-writer/:{{user.id}}">My Posts</a></li>
+        {{!-- <li>
+          <form action="/api/post/post-per-writer" method="POST">
+            <input type="text" name="writerId" value="{{user.writerId}}" hidden>
+            <button type="submit">My Posts</button>
+          </form>
+        </li> --}}
       </ul>
     </div>
+
+    

@@ -1,154 +1,239 @@
-<style>
+ <style>
     body {
       font-family: Arial, sans-serif;
       max-width: 600px;
       margin: 0 auto;
       padding: 20px;
     }
-  
-    form > div {
-      margin-bottom: 20px;
+    .form-group {
+      margin-bottom: 15px;
       position: relative;
     }
-  
     label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
-  
-    input[type="text"], textarea {
+    input[type="text"],
+    textarea {
       width: 100%;
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 4px;
       box-sizing: border-box;
     }
-  
     textarea {
-      height: 100px;
+      min-height: 100px;
+      resize: vertical;
     }
-  
-    span.edit {
-      
+    .edit-span {
+       /* MAKING IT APPEAR TOP */
+      /* position: absolute;
+      right: 10px;
+      top: 0; */
+      color: blue;
+      cursor: pointer;
+      user-select: none;
+    }
+    .field-actions {
       /* MAKING IT APPEAR TOP */
       /*position: absolute;
       right: 0;
-      top: 0;*/
-      
-      background: #f0f0f0;
-      padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-  
-    span.edit:hover {
-      background: #e0e0e0;
-    }
-    .actions {
-      /* MAKING IT APPEAR TOP */
-      /* position: absolute;
-      right: 0;
       top: 0; */
-      display: flex;
-      gap: 5px;
-    }
-    button[type="submit"] {
-      background: #4CAF50;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button[type="button"] {
-      background: #f44336;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .hidden {
       display: none;
     }
-</style>
+    .field-actions button {
+      margin-left: 5px;
+      padding: 3px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .form-actions {
+      margin-top: 20px;
+      text-align: right;
+    }
+    .form-actions button {
+      margin-left: 10px;
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+    input:read-only,
+    textarea:read-only {
+      background-color: #f9f9f9;
+      cursor: not-allowed;
+    }
+  
+  .element { 
+    background: green;
+    text-align: center;
+  border-radius: 25px;
+  corner-shape: bevel round scoop squircle; /* superellipse(0);  equal to 'bevel' */
+}
+  
+  .product-badge {
+  border-radius: 0 4px 4px 0;
+  background-color: var(--badge-bg);
+}
+  
+  @layer demo {
+  @supports (corner-shape: bevel) {
+    .primary {
+      corner-shape: bevel;
+      transition: corner-shape 0.3s ease;
+
+      &:hover {
+        corner-shape: squircle;
+      }
+    }
+
+    .secondary {
+      border-radius: 25px;
+      corner-shape: superellipse(0.5);
+    }
+
+    .danger {
+      border-radius: 16px;
+      corner-shape: squircle;
+    }
+
+    .notch {
+      border-radius: 12px;
+      corner-shape: notch;
+    }
+
+    .scoop {
+      border-radius: 14px;
+      corner-shape: scoop;
+    }
+  }
+}
+
+
+
+  </style>
+
 {{title}}
 {{> writersNavs}}
 
-  <form id="postForm">
-    <input type="hidden" value="id" name="id">
+<form id="postForm" action="/api/post/create-post" method="POST">
+    <input type="hidden" value="{{user.id}}" name="writerId" required>
 
-    <div>
+    <div class="form-group">
       <label for="title">Title</label>
       <input type="text" name="title" placeholder="Give your post a title" readonly>
-      <span class="edit" onclick="activateField('title')">Edit</span>
-      <div class="actions hidden" id="titleActions">
-        <button type="button" onclick="cancelEdit('title')">Cancel</button>
-        <button type="submit" form="postForm">Create Post</button>
+      <span class="edit-span" onclick="activateField(this)">Edit</span>
+      <div class="field-actions">
+        <button type="button" class="save-btn" onclick="saveField(this)">Save</button>
+        <button type="button" class="cancel-btn" onclick="cancelField(this)">Cancel</button>
       </div>
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="keywords">Keywords</label>
-      <input type="text" name="keywords" placeholder="Enter keywords in your post" readonly>
-      <span class="edit" onclick="activateField('keywords')">Edit</span>
-      <div class="actions hidden" id="keywordsActions">
-        <button type="button" onclick="cancelEdit('keywords')">Cancel</button>
-        <button type="submit" form="postForm">Create Post</button>
+      <input type="text" name="keywrds" placeholder="Enter keywords in your post" readonly>
+      <span class="edit-span" onclick="activateField(this)">Edit</span>
+      <div class="field-actions">
+        <button type="button" class="save-btn" onclick="saveField(this)">Save</button>
+        <button type="button" class="cancel-btn" onclick="cancelField(this)">Cancel</button>
       </div>
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="description">Description</label>
       <textarea name="description" placeholder="Write little description of your post" readonly></textarea>
-      <span class="edit" onclick="activateField('description')">Edit</span>
-      <div class="actions hidden" id="descriptionActions">
-        <button type="button" onclick="cancelEdit('description')">Cancel</button>
-        <button type="submit" form="postForm">Create Post</button>
+      <span class="edit-span" onclick="activateField(this)">Edit</span>
+      <div class="field-actions">
+        <button type="button" class="save-btn" onclick="saveField(this)">Save</button>
+        <button type="button" class="cancel-btn" onclick="cancelField(this)">Cancel</button>
       </div>
     </div>
-
-    <div>
+    
+    
+    <div class="form-group">
       <label for="content">Content</label>
       <textarea id="content" name="content" placeholder="Post body" readonly></textarea>
-      <span class="edit" onclick="activateField('content')">Edit</span>
-      <div class="actions hidden" id="contentActions">
-        <button type="button" onclick="cancelEdit('content')">Cancel</button>
-        <button type="submit" form="postForm">Create Post</button>
+      <span class="edit-span" onclick="activateField(this)">Edit</span>
+      <div class="field-actions">
+        <button type="button" class="save-btn" onclick="saveField(this)">Save</button>
+        <button type="button" class="cancel-btn" onclick="cancelField(this)">Cancel</button>
       </div>
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="summary">Summary</label>
       <textarea name="summary" placeholder="Summarize your post" readonly></textarea>
-      <span class="edit" onclick="activateField('summary')">Edit</span>
-      <div class="actions hidden" id="summaryActions">
-        <button type="button" onclick="cancelEdit('summary')">Cancel</button>
-        <button type="submit" form="postForm">Create Post</button>
+      <span class="edit-span" onclick="activateField(this)">Edit</span>
+      <div class="field-actions">
+        <button type="button" class="save-btn" onclick="saveField(this)">Save</button>
+        <button type="button" class="cancel-btn" onclick="cancelField(this)">Cancel</button>
       </div>
     </div>
-  </form>
+
+    <div class="form-actions">
+      <button type="button" class="cancel-all">Cancel</button>
+      <button type="button" class="save-all">Save</button>
+      <button type="submit">Create Post</button>
+    </div>
+</form>
 
   <script>
-    function activateField(fieldName) {
-      const field = document.querySelector(`[name="${fieldName}"]`);
-      const editSpan = field.nextElementSibling;
-      const actionsDiv = document.getElementById(`${fieldName}Actions`);
+    function activateField(editSpan) {
+      const group = editSpan.parentElement;
+      const input = group.querySelector('input, textarea');
+      const actions = group.querySelector('.field-actions');
+      const editSpanElement = group.querySelector('.edit-span');
 
-      field.removeAttribute('readonly');
-      field.focus();
-      editSpan.classList.add('hidden');
-      actionsDiv.classList.remove('hidden');
+      input.readOnly = false;
+      input.focus();
+      editSpanElement.style.display = 'none';
+      actions.style.display = 'block';
     }
 
-    function cancelEdit(fieldName) {
-      const field = document.querySelector(`[name="${fieldName}"]`);
-      const editSpan = field.nextElementSibling;
-      const actionsDiv = document.getElementById(`${fieldName}Actions`);
+    function saveField(saveBtn) {
+      const group = saveBtn.parentElement.parentElement;
+      const input = group.querySelector('input, textarea');
+      const editSpanElement = group.querySelector('.edit-span');
+      const actions = group.querySelector('.field-actions');
 
-      field.setAttribute('readonly', 'readonly');
-      editSpan.classList.remove('hidden');
-      actionsDiv.classList.add('hidden');
+      input.readOnly = true;
+      editSpanElement.style.display = 'block';
+      actions.style.display = 'none';
     }
+
+    function cancelField(cancelBtn) {
+      const group = cancelBtn.parentElement.parentElement;
+      const input = group.querySelector('input, textarea');
+      const editSpanElement = group.querySelector('.edit-span');
+      const actions = group.querySelector('.field-actions');
+
+      input.value = input.defaultValue;
+      input.readOnly = true;
+      editSpanElement.style.display = 'block';
+      actions.style.display = 'none';
+    }
+
+    document.querySelector('.save-all').addEventListener('click', function() {
+      document.querySelectorAll('input, textarea').forEach(input => {
+        input.readOnly = true;
+      });
+      document.querySelectorAll('.edit-span').forEach(span => {
+        span.style.display = 'block';
+      });
+      document.querySelectorAll('.field-actions').forEach(div => {
+        div.style.display = 'none';
+      });
+    });
+
+    document.querySelector('.cancel-all').addEventListener('click', function() {
+      document.querySelectorAll('input, textarea').forEach(input => {
+        input.value = input.defaultValue;
+        input.readOnly = true;
+      });
+      document.querySelectorAll('.edit-span').forEach(span => {
+        span.style.display = 'block';
+      });
+      document.querySelectorAll('.field-actions').forEach(div => {
+        div.style.display = 'none';
+      });
+    });
   </script>
