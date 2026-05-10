@@ -1,12 +1,25 @@
 <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+ .pGenContainer {
+      background: green;
+      border-radius: 3rem;
+   margin-left: 2rem;
+   
+   }
   
-  .pContainer {
+    .pContainer {
       display: flex; 
       gap: 14rem;
   }
   
-  .fd {
-      border: 00.1px solid gray;
+    .fd {
+      border: none /* 00.1px solid gray */;
       margin-top: 1rem;
       padding: 8px;
       border-radius: 5px;
@@ -19,26 +32,12 @@
       /*border-bottom: 0.3px solid brown;*/
   }
   
-  .bios-h, #aboutMe>h3 {
-      border-bottom: 0.3px solid brown;
-  }
-  
-  button {
-    border: none;
-  }
-  
-  button[type="submit"] {
-    background: green;
-    font-size: 20px;
-    border: none;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    margin: 1.5rem 0;
-}
-  
   .cls {
-    color: brown; 
-    font-size: 25px;
+    color:  white; 
+    font-size: 15px;
+    border: none;
+    background: red;
+    padding: 10px;
   }
   
 .grid-container {
@@ -47,27 +46,7 @@
   height: 100vh;
   grid-template-rows: auto 1fr auto;
 }
-  
 
-  #details {
-    
-   /* display: grid;
-    grid-template-columns: 1fr 1fr;*/
-   
-  }
-  
-  .p-inputs {
-    width: 98%;
-    height: 3.5rem;
-    border: 1.5px solid whitesmoke;
-    border-radius: 15px;
-    font-size: 25px;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    padding: 20px;
-
-  }
-  
   .accoutDelete {
     background: whitesmoke;
   }
@@ -79,14 +58,7 @@
     font-size: 25px;
   }
   
-  .blockQoute {
-    line-height: 3rem;
-    font-size: 20px;
-    text-align: justify;
-    
-  }
   
-
   #addressForm, #clsAddressForm, #showAccountDelete, #pswChange, #pswClose, #picClose{
     display: none;
   }
@@ -116,7 +88,12 @@
   }
   
   @media screen and (max-width: 600px) {
+    .pGenContainer {
+   margin-left: 1px;
    
+   }
+    
+    
    .pContainer {
        display: flex; 
        gap: 5rem;
@@ -137,44 +114,10 @@
  }
   
   
-  
-  /* PROFILE PICTURE STYLING */
-     .rofile-pic-container {
-    position: relative; /* Essential for positioning the button relative to the image */
-    width: 160px;       /* Adjust size as needed */
-    height: 160px;
-    border-radius: 3rem; /* Makes the container circular */
-    overflow: hidden;   /* Keeps the image within the container shape */
+  .edit {
     cursor: pointer;
-    background: ;
-}
+  }
 
-.rofile-pic {
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-    border-radius: 2rem;
-}
-
-.uload-button {
-    position: absolute; /* Positions the button relative to the container */
-    bottom: 5px;        /* Adjust position as needed */
-    right: 13px;
-    background-color: #007bff; /* Example blue background */
-    color: white;
-    border-radius: 50%; /* Makes the button circular */
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px; /* Centers the '+' vertically */
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.uload-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-  
   .p-image {
     width: 100px;
     height: 100px;
@@ -215,9 +158,78 @@
     justify-content: center;
     cursor: pointer;
   }
+  
+    form > div {
+      margin-bottom: 20px;
+      position: relative;
+    }
+  
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  
+    /* input[type="text"] */ 
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      border: none /* 1px solid #ccc */;
+      border-radius: 4px;
+      /* box-sizing: border-box; /*
+    }
+  
+    textarea {
+      height: 100px;
+    }
+  
+    span.edit {
+      
+      /* MAKING IT APPEAR TOP */
+      /*position: absolute;
+      right: 0;
+      top: 0;*/
+      
+      background: #f0f0f0;
+      padding: 2px 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  
+    span.edit:hover {
+      background: #e0e0e0;
+    }
+    .actions {
+      /* MAKING IT APPEAR TOP */
+      /* position: absolute;
+      right: 0;
+      top: 0; */
+      display: flex;
+      gap: 5px;
+    }
+    button[type="submit"] {
+      background: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button[type="button"] {
+      background: #f44336;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
 </style>
 <a href="/dashboard">Go to Dashboard</a>
-  <div id="grid-container">
+
+<div id="grid-container">
       
    <!-- <div id="profileMain">
       
@@ -236,18 +248,19 @@
 </div>
 
 </section> -->
-    
+  <div class="pGenContainer">
   <div class="pContainer" >
   <div class="p-image">
     <img id="profilePic" src="{{user.image}}" alt="{{user.name}}">
     <b id="picOpen">+</b>
   </div>
-  <li style="margin-top: 2.2rem; background: whitesmoke; list-style: none; border-radius: 1rem; font-size: 30px; padding: 1rem;">{{user.username}}</li>
+  <li style="margin-top: 1.4rem; background: whitesmoke; list-style: none; border-radius: 1rem; font-size: 30px; padding: 1rem; height: fit-content;">{{user.username}}</li>
   </div>
  
   <!-- Email -->
- <li style="margin-top: 1rem; font-size: 20px; font-weight: 600; list-style: none;" class="email"><a>{{user.email}}</a>
+ <li style="margin-top: 1rem; text-align:center; font-size: 20px; font-weight: 600; list-style: none;" class="email"><a>{{user.email}}</a>
  </li>
+ </div>
 
    <!-- Profile Image -->
    <div id="picForm">
@@ -263,32 +276,63 @@
   <!-- About Me -->
   <div style="text-align: justify;" class="fd" id="aboutMe">
      <h3>Who I Am</h3>
-     <p>
-         Results-driven Full Stack Software Developer with 3 years of experience in designing, developing, and deploying scalable dynamic and static web applications.
+
+     <div>
+      <textarea name="aboutMe" value="Wr" readonly style="height: 300px; border: none"> 
+      Results-driven Full Stack Software Developer with 3 years of experience in designing, developing, and deploying scalable dynamic and static web applications.
 
         Combining a strong foundation in Philosophy and Psychology with technical expertise in JavaScript, Node.js, React, Express.js, CSS, MySQL, MongoDB, and HTML.
 
         Proven ability to deliver high-quality solutions, drive innovation, and collaborate with cross-functional teams.
 
-       Skilled in leveraging technical knowledge to create intuitive user experiences and drive business growth.
-     </p>
+       Skilled in leveraging technical knowledge to create intuitive user experiences and drive business growth. 
+       
+       </textarea>
+      <span class="edit" onclick="activateField('aboutMe')">Edit</span>
+      <div class="actions hidden" id="aboutMeActions">
+        <button type="button" onclick="cancelEdit('aboutMe')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+     
+     
+     
     </div>
    
    <!-- Bio Data -->   
    <div class="fd" id="bios">
      <h3 class="bios-h">Bio Data</h3>
      <form id="details" action="" method="">
-       <input type="text" name="id" value="{{user.id}}" hidden>
+      <input type="text" name="name" value="{{user.id}}" hidden>
+         
+       <div>
+      <label for="name">Name</label>
+      <input type="text" name="name" value="{{user.name}}" readonly>
+      <span class="edit" onclick="activateField('name')">Edit</span>
+      <div class="actions hidden" id="nameActions">
+        <button type="button" onclick="cancelEdit('name')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+    <div>
+      <label for="phone">Phone</label>
+      <input type="phone" name="phone" value="{{user.phone}}" readonly>
+      <span class="edit" onclick="activateField('phone')">Edit</span>
+      <div class="actions hidden" id="phoneActions">
+        <button type="button" onclick="cancelEdit('phone')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+    <div>
+      <label for="dob">Date of Birth</label>
+      <input type="text" name="dob" value="D.O.B" readonly>
+      <span class="edit" onclick="activateField('dob')">Edit</span>
+      <div class="actions hidden" id="dobActions">
+        <button type="button" onclick="cancelEdit('dob')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
        
-       <label for="name">Name</label>
-       <input class="p-inputs" id="name" type="text" name="name" value="{{user.name}}">
-       
-       <label for="phone">Phone</label>
-       <input class="p-inputs" type="phone" name="phone" id="phone" value="Enter Phone Number" />
-       
-       <label for="dob">Date of Birth</label>
-       <input class="p-inputs" type="date" name="dob" id="" value="Enter D.O.B" placeholder="DOB" />
-       <button type="submit" id="submitBtn" style="display: none;">Update Changes</button>
      </form>
    </div>
    
@@ -296,11 +340,48 @@
    <div class="fd" id="address">
      <h3 id="addressOpen" >Address</h3>
      <form id="addressForm" action="" method=" " >
-         <input class="p-inputs" type="text" name="" id="" value="Enter Home Town/Resident" />
-        <input class="p-inputs" type="text" name="" id="" value="Enter City" />
-        <input class="p-inputs" type="text" name="" id="" value="Enter State" />
-        <input class="p-inputs" type="text" name="" id="" value="Enter Nationality" />
-         <button type="submit" id="submitBtn" style="display: none;">Update Changes</button>
+
+ <div>
+      <label for="resident">Resident Address</label>
+      <input type="text" name="resident"  readonly>
+      <span class="edit" onclick="activateField('resident')">Edit</span>
+      <div class="actions hidden" id="residentActions">
+        <button type="button" onclick="cancelEdit('resident')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+
+<h3>Place/Permanent Address</h3>
+    <div>
+      <label for="city">City</label>
+      <input type="text" name="city" value="User's City" readonly>
+      <span class="edit" onclick="activateField('city')">Edit</span>
+      <div class="actions hidden" id="cityActions">
+        <button type="button" onclick="cancelEdit('city')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+    
+    <div>
+      <label for="proSt">Province/State</label>
+      <input type="text" name="proSt" value="Phone No." readonly>
+      <span class="edit" onclick="activateField('proSt')">Edit</span>
+      <div class="actions hidden" id="proStActions">
+        <button type="button" onclick="cancelEdit('proSt')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+    
+    <div>
+      <label for="nationality">Nationality</label>
+      <input type="text" name="nationality" value="Nationality" readonly>
+      <span class="edit" onclick="activateField('nationality')">Edit</span>
+      <div class="actions hidden" id="nationalityActions">
+        <button type="button" onclick="cancelEdit('nationality')">Cancel</button>
+        <button type="submit" form="postForm">Update</button>
+      </div>
+    </div>
+    
      </form>
      <button class="cls" id="clsAddressForm"><b> Close </b></button>
   </div>
@@ -328,10 +409,9 @@
    <!-- Password Change -->
    <div class="p-psw-change">
       <button onclick="PswOpen()" id="pswOpen">Change Password</button>
-      <form id="pswChange" id="pswChange" action="/resetpassword" method="POST">
-      <input type="text" name="id" value="{{user.id}}" hidden>
-          <input name="oldPassword" placeholder="Enter Your Old Password">
-          <input name="newPassword" placeholder="Create New Password"><br>
+      <form id="pswChange" action="" method="">
+          <input name="Oldpassword" placeholder="Enter Your Old Password">
+          <input name="password" placeholder="Create New Password"><br>
           <button type="submit">Submit</button>
       </form>
       <button class="cls" onclick="PswClose()" id="pswClose"><b> Close </b></button>
@@ -342,43 +422,22 @@
       <button id="accountDeleteOpen">Delete Account</button>
       <div class="blockQoute" id="showAccountDelete"> 
           Are you sure you want to delete your account?
-         <form action="/delete" method="POST">
-            <input type="text" name="id" value="{{user.id}}" hidden>
+         <form action="" method="">
+            <input name="id" hidden>
            If yes<button type="submit" style="background: red; color: green;">Confirm</button><br>
           </form>if no <button class="cls" id="closeDelete">Cancel</button>
         </div>
       </div>
       
-  </div>
+</div>
+    
+
+
+
+ 
   <a href="/logout">Logout</a>
-  <!-- Profile picture script -->
-  <script>
-  const fileInput = document.getElementById('profilePicInput');
-  const uploadButton = document.getElementById('picUpload');
-  const picOpen = document.getElementById('picOpen');
-  const picForm = document.getElementById('picForm');
-  const picClose = document.getElementById('picClose');
-
-  fileInput.addEventListener('change', function() {
-    if (this.files.length > 0) {
-      uploadButton.style.display = 'block';
-    } else {
-      uploadButton.style.display = 'none';
-    }
-  });
-
-  picOpen.addEventListener('click', function() {
-    picForm.style.display = 'block';
-  });
-
-  picClose.addEventListener('click', function(e) {
-    e.preventDefault();
-    picForm.style.display = 'none';
-  });
-</script>
-  
-  
-  <!-- Bio update Script -->
+ 
+ <!-- Bio update Script -->
   <script>
   const nameInput = document.querySelector('input[name="name"]');
   const addressInput = document.querySelector('input[name="address"]');
@@ -476,9 +535,30 @@ function onDevelopment() {
           CloseAddressForm.style.display = "none";
       });
   </script>
+  
+  <!-- Edit Script -->
+  <script>
+    function activateField(fieldName) {
+      const field = document.querySelector(`[name="${fieldName}"]`);
+      const editSpan = field.nextElementSibling;
+      const actionsDiv = document.getElementById(`${fieldName}Actions`);
 
+      field.removeAttribute('readonly');
+      field.focus();
+      editSpan.classList.add('hidden');
+      actionsDiv.classList.remove('hidden');
+    }
 
+    function cancelEdit(fieldName) {
+      const field = document.querySelector(`[name="${fieldName}"]`);
+      const editSpan = field.nextElementSibling;
+      const actionsDiv = document.getElementById(`${fieldName}Actions`);
 
+      field.setAttribute('readonly', 'readonly');
+      editSpan.classList.remove('hidden');
+      actionsDiv.classList.add('hidden');
+    }
+  </script>
 
 
 

@@ -1,26 +1,23 @@
+<style>
+    li {
+        list-style: none;
+    }
+</style>
+
 <h1>Here is all posts</h1>
 {{title}}
-{{!-- {{> writersNavs}} --}}
-<ul>
-        <h1>Articles2</h1>
-        {{#each results}}
-            <li>Title: {{this.title}}</li>
-            <li>Name: {{this.writerId.username}}</li>
-            <li>Description: {{this.description}}</li>
-            <hr>
-            <br>       
-        {{/each}}
-    </ul>
+<a href="/dashboard">Go to Dashboard</a>
+{{> writersNavs}}
 
-<h1>Articles</h1>
+<h1>Posts</h1>
 {{#each results}}
-    <form action="/api/post/get-posts" method="POST">
-        <input type="text" name="writerId" hidden>
-        <input type="text" name="title" value="{{this.title}}" >
-        <span>{{this.writerId.username}}</span>
-        <button type="submit">View This Post</button>
-    </form>  
+    <div style="margin-left: 1rem;">
+        <li>Title: {{this.title}}</li>
+        <li>Description: {{this.description}}</li>
+        <li>By: {{this.writerId.username}}</li>
+        <li><a href="http://">View post{{this._id}}</a></li>
+    </div><br>
 {{/each}}
- 
- {{!-- Footer --}}
- <div>{{> footer}}</div>
+
+{{!-- Footer --}}
+<div>{{> footer}}</div>

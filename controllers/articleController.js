@@ -120,6 +120,7 @@ exports.postsByAWriter = async (req, res) => {
         
         // Find all articles by the writer
         const postsPerwriter = await articleModel.find({ writerId }).populate('writerId', 'email username').lean();
+console.log('Details', postsPerwriter);
 
         if (!postsPerwriter || postsPerwriter.length === 0) {
             return res.status(404).json({ message: 'No posts found for this writer' });
