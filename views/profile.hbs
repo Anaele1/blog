@@ -1,119 +1,121 @@
 <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
- .pGenContainer {
-      background: green;
-      border-radius: 3rem;
-   margin-left: 2rem;
-   
-   }
-  
-    .pContainer {
-      display: flex; 
-      gap: 14rem;
+  .pGenContainer {
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 1px solid rgb(191, 192, 191);
   }
-  
-    .fd {
-      border: none /* 00.1px solid gray */;
-      margin-top: 1rem;
-      padding: 8px;
-      border-radius: 5px;
+
+  .pContainer {
+    display: flex;
+    padding: 1.5rem;
   }
-  
+
+  .fd {
+    border: none
+      /* 00.1px solid gray */
+    ;
+    margin-top: 1rem;
+    padding: 8px;
+    border-radius: 5px;
+  }
+
   .fd>h3 {
-      padding-left: 0.5rem;
-      color: green;
-      margin-top: 2px;
-      /*border-bottom: 0.3px solid brown;*/
+    padding-left: 0.5rem;
+    color: green;
+    margin-top: 2px;
+    /*border-bottom: 0.3px solid brown;*/
   }
-  
+
   .cls {
-    color:  white; 
+    color: white;
     font-size: 15px;
     border: none;
     background: red;
     padding: 10px;
   }
-  
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  height: 100vh;
-  grid-template-rows: auto 1fr auto;
-}
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 100vh;
+    grid-template-rows: auto 1fr auto;
+  }
 
   .accoutDelete {
     background: whitesmoke;
   }
-  
+
   .accountDelete>#accountDeleteOpen {
     border: none;
     color: red;
     border-radius: 1rem;
     font-size: 25px;
   }
-  
-  
-  #addressForm, #clsAddressForm, #showAccountDelete, #pswChange, #pswClose, #picClose{
+
+
+  #addressForm,
+  #clsAddressForm,
+  #showAccountDelete,
+  #pswChange,
+  #pswClose,
+  #picClose {
     display: none;
   }
-  
-  .p-psw-change, .accountDelete, #picFor{
+
+  .p-psw-change,
+  .accountDelete,
+  #picFor {
     padding: 0.5rem;
     /*background: whitesmoke;
     margin: 1rem 2rem;*/
   }
-  
+
   #pswOpen {
     font-size: 20px;
     font-weight: 700;
   }
-  
+
   #pswChange {
     margin-bottom: 1rem;
     margin-top: 1rem;
     text-align: center;
   }
-  
+
   #pswChange>input {
     margin-bottom: 1rem;
     text-align: center;
     padding: 3px;
     height: 1.5rem;
   }
-  
+
   @media screen and (max-width: 600px) {
     .pGenContainer {
-   margin-left: 1px;
-   
-   }
-    
-    
-   .pContainer {
-       display: flex; 
-       gap: 5rem;
-   }
-   
+      margin-left: 1px;
+
+    }
+
+
+    .pContainer {
+      display: flex;
+      gap: 5rem;
+    }
+
     #details {
-    display: block;
-   }
-    
-   .p-inputs {
-    height: 3.5rem;
-    margin-bottom: 1rem;
-    font-size: 20px;
-    font-weight: 700;
-    padding: 20px;
+      display: block;
+    }
+
+    .p-inputs {
+      height: 3.5rem;
+      margin-bottom: 1rem;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 20px;
+    }
+
   }
-    
- }
-  
-  
+
+
   .edit {
     cursor: pointer;
   }
@@ -158,25 +160,28 @@
     justify-content: center;
     cursor: pointer;
   }
-  
-    form > div {
-      margin-bottom: 20px;
-      position: relative;
-    }
-  
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-  
-    /* input[type="text"] */ 
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      border: none /* 1px solid #ccc */;
-      border-radius: 4px;
-      /* box-sizing: border-box; /*
+
+  form>div {
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  /* input[type="text"] */
+  input,
+  textarea {
+    width: 100%;
+    padding: 8px;
+    border: none
+      /* 1px solid #ccc */
+    ;
+    border-radius: 4px;
+    /* box-sizing: border-box; /*
     }
   
     textarea {
@@ -186,52 +191,56 @@
     span.edit {
       
       /* MAKING IT APPEAR TOP */
-      /*position: absolute;
+    /*position: absolute;
       right: 0;
       top: 0;*/
-      
-      background: #f0f0f0;
-      padding: 2px 5px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-  
-    span.edit:hover {
-      background: #e0e0e0;
-    }
-    .actions {
-      /* MAKING IT APPEAR TOP */
-      /* position: absolute;
+
+    background: #f0f0f0;
+    padding: 2px 5px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  span.edit:hover {
+    background: #e0e0e0;
+  }
+
+  .actions {
+    /* MAKING IT APPEAR TOP */
+    /* position: absolute;
       right: 0;
       top: 0; */
-      display: flex;
-      gap: 5px;
-    }
-    button[type="submit"] {
-      background: #4CAF50;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button[type="button"] {
-      background: #f44336;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .hidden {
-      display: none;
-    }
+    display: flex;
+    gap: 5px;
+  }
+
+  button[type="submit"] {
+    background: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button[type="button"] {
+    background: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .hidden {
+    display: none;
+  }
 </style>
 <a href="/dashboard">Go to Dashboard</a>
 
 <div id="grid-container">
-      
-   <!-- <div id="profileMain">
+
+  <!-- <div id="profileMain">
       
       <section>
     <h1>Pic Upload</h1>
@@ -249,21 +258,24 @@
 
 </section> -->
   <div class="pGenContainer">
-  <div class="pContainer" >
-  <div class="p-image">
-    <img id="profilePic" src="{{user.image}}" alt="{{user.name}}">
-    <b id="picOpen">+</b>
-  </div>
-  <li style="margin-top: 1.4rem; background: whitesmoke; list-style: none; border-radius: 1rem; font-size: 30px; padding: 1rem; height: fit-content;">{{user.username}}</li>
-  </div>
- 
-  <!-- Email -->
- <li style="margin-top: 1rem; text-align:center; font-size: 20px; font-weight: 600; list-style: none;" class="email"><a>{{user.email}}</a>
- </li>
- </div>
+    <div class="pContainer">
+      <div style="margin: 5px 2rem;" class="p-image">
+        <img id="profilePic" src="{{user.image}}" alt="{{user.name}}">
+        <b id="picOpen">+</b>
+      </div>
+      <li
+        style="margin-left: 10em; margin-top: 1.4rem; background: whitesmoke; list-style: none; border-radius: 1rem; font-size: 30px; padding: 1rem; height: fit-content;">
+        {{user.username}}</li>
+    </div>
 
-   <!-- Profile Image -->
-   <div id="picForm">
+    <!-- Email -->
+    <li style="margin: 15px 2rem; font-size: 20px; font-weight: 600; list-style: none;" class="email">
+      <a>{{user.email}}</a>
+    </li>
+  </div>
+
+  <!-- Profile Image -->
+  <div id="picForm">
     <h3>Change Profile Picture</h3>
     <form action="/add" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="id" value="{{user.id}}" required>
@@ -272,13 +284,13 @@
     </form>
     <button class="cls" id="picClose"><b>Close</b></button>
   </div>
-  
-  <!-- About Me -->
-  <div style="text-align: justify;" class="fd" id="aboutMe">
-     <h3>Who I Am</h3>
 
-     <div>
-      <textarea name="aboutMe" value="Wr" readonly style="height: 300px; border: none"> 
+  <!-- About Me -->
+  <div  class="fd" id="aboutMe">
+    <h3>Who I Am</h3>
+
+    <div>
+      <textarea name="aboutMe" value="Wr" readonly style="height: 300px; border: none">
       Results-driven Full Stack Software Developer with 3 years of experience in designing, developing, and deploying scalable dynamic and static web applications.
 
         Combining a strong foundation in Philosophy and Psychology with technical expertise in JavaScript, Node.js, React, Express.js, CSS, MySQL, MongoDB, and HTML.
@@ -294,151 +306,151 @@
         <button type="submit" form="postForm">Update</button>
       </div>
     </div>
-     
-     
-     
-    </div>
-   
-   <!-- Bio Data -->   
-   <div class="fd" id="bios">
-     <h3 class="bios-h">Bio Data</h3>
-     <form id="details" action="" method="">
-      <input type="text" name="name" value="{{user.id}}" hidden>
-         
-       <div>
-      <label for="name">Name</label>
-      <input type="text" name="name" value="{{user.name}}" readonly>
-      <span class="edit" onclick="activateField('name')">Edit</span>
-      <div class="actions hidden" id="nameActions">
-        <button type="button" onclick="cancelEdit('name')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-    <div>
-      <label for="phone">Phone</label>
-      <input type="phone" name="phone" value="{{user.phone}}" readonly>
-      <span class="edit" onclick="activateField('phone')">Edit</span>
-      <div class="actions hidden" id="phoneActions">
-        <button type="button" onclick="cancelEdit('phone')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-    <div>
-      <label for="dob">Date of Birth</label>
-      <input type="text" name="dob" value="D.O.B" readonly>
-      <span class="edit" onclick="activateField('dob')">Edit</span>
-      <div class="actions hidden" id="dobActions">
-        <button type="button" onclick="cancelEdit('dob')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-       
-     </form>
-   </div>
-   
-   <!-- Address -->   
-   <div class="fd" id="address">
-     <h3 id="addressOpen" >Address</h3>
-     <form id="addressForm" action="" method=" " >
 
- <div>
-      <label for="resident">Resident Address</label>
-      <input type="text" name="resident"  readonly>
-      <span class="edit" onclick="activateField('resident')">Edit</span>
-      <div class="actions hidden" id="residentActions">
-        <button type="button" onclick="cancelEdit('resident')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
 
-<h3>Place/Permanent Address</h3>
-    <div>
-      <label for="city">City</label>
-      <input type="text" name="city" value="User's City" readonly>
-      <span class="edit" onclick="activateField('city')">Edit</span>
-      <div class="actions hidden" id="cityActions">
-        <button type="button" onclick="cancelEdit('city')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-    
-    <div>
-      <label for="proSt">Province/State</label>
-      <input type="text" name="proSt" value="Phone No." readonly>
-      <span class="edit" onclick="activateField('proSt')">Edit</span>
-      <div class="actions hidden" id="proStActions">
-        <button type="button" onclick="cancelEdit('proSt')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-    
-    <div>
-      <label for="nationality">Nationality</label>
-      <input type="text" name="nationality" value="Nationality" readonly>
-      <span class="edit" onclick="activateField('nationality')">Edit</span>
-      <div class="actions hidden" id="nationalityActions">
-        <button type="button" onclick="cancelEdit('nationality')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-    
-     </form>
-     <button class="cls" id="clsAddressForm"><b> Close </b></button>
+
   </div>
-   
-   <!-- Education -->
-   <div class="fd" id="education">
-    <h3 onclick="onDevelopment()">Education</h3>
-   </div>
 
-   <!-- Experience -->
-   <div class="fd" id="experience">
-     <h3  onclick="onDevelopment()">Works and Experiences</h3>
-   </div>
-   
-   <!-- Social Media -->
-   <div class="fd" id="socials">
-     <h3 onclick="onDevelopment()">Socials/Websites</h3>
-   </div>
-      
-   <!-- Works and Projects -->
-   <div class="fd" id="worksProjects">
-     <h3 onclick="onDevelopment()">Works and Projects</h3>
-   </div>
-   
-   <!-- Password Change -->
-   <div class="p-psw-change">
-      <button onclick="PswOpen()" id="pswOpen">Change Password</button>
-      <form id="pswChange" action="" method="">
-          <input name="Oldpassword" placeholder="Enter Your Old Password">
-          <input name="password" placeholder="Create New Password"><br>
-          <button type="submit">Submit</button>
-      </form>
-      <button class="cls" onclick="PswClose()" id="pswClose"><b> Close </b></button>
-   </div>
-   
-   <!-- Delete Account -->
-   <div class="delete accountDelete">
-      <button id="accountDeleteOpen">Delete Account</button>
-      <div class="blockQoute" id="showAccountDelete"> 
-          Are you sure you want to delete your account?
-         <form action="" method="">
-            <input name="id" hidden>
-           If yes<button type="submit" style="background: red; color: green;">Confirm</button><br>
-          </form>if no <button class="cls" id="closeDelete">Cancel</button>
+  <!-- Bio Data -->
+  <div class="fd" id="bios">
+    <h3 class="bios-h">Bio Data</h3>
+    <form id="details" action="" method="">
+      <input type="text" name="name" value="{{user.id}}" hidden>
+
+      <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" value="{{user.name}}" readonly>
+        <span class="edit" onclick="activateField('name')">Edit</span>
+        <div class="actions hidden" id="nameActions">
+          <button type="button" onclick="cancelEdit('name')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
         </div>
       </div>
-      
+      <div>
+        <label for="phone">Phone</label>
+        <input type="phone" name="phone" value="{{user.phone}}" readonly>
+        <span class="edit" onclick="activateField('phone')">Edit</span>
+        <div class="actions hidden" id="phoneActions">
+          <button type="button" onclick="cancelEdit('phone')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
+        </div>
+      </div>
+      <div>
+        <label for="dob">Date of Birth</label>
+        <input type="text" name="dob" value="D.O.B" readonly>
+        <span class="edit" onclick="activateField('dob')">Edit</span>
+        <div class="actions hidden" id="dobActions">
+          <button type="button" onclick="cancelEdit('dob')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Address -->
+  <div class="fd" id="address">
+    <h3 id="addressOpen">Address</h3>
+    <form id="addressForm" action="" method=" ">
+
+      <div>
+        <label for="resident">Resident Address</label>
+        <input type="text" name="resident" readonly>
+        <span class="edit" onclick="activateField('resident')">Edit</span>
+        <div class="actions hidden" id="residentActions">
+          <button type="button" onclick="cancelEdit('resident')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
+        </div>
+      </div>
+
+      <h3>Place/Permanent Address</h3>
+      <div>
+        <label for="city">City</label>
+        <input type="text" name="city" value="User's City" readonly>
+        <span class="edit" onclick="activateField('city')">Edit</span>
+        <div class="actions hidden" id="cityActions">
+          <button type="button" onclick="cancelEdit('city')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
+        </div>
+      </div>
+
+      <div>
+        <label for="proSt">Province/State</label>
+        <input type="text" name="proSt" value="Phone No." readonly>
+        <span class="edit" onclick="activateField('proSt')">Edit</span>
+        <div class="actions hidden" id="proStActions">
+          <button type="button" onclick="cancelEdit('proSt')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
+        </div>
+      </div>
+
+      <div>
+        <label for="nationality">Nationality</label>
+        <input type="text" name="nationality" value="Nationality" readonly>
+        <span class="edit" onclick="activateField('nationality')">Edit</span>
+        <div class="actions hidden" id="nationalityActions">
+          <button type="button" onclick="cancelEdit('nationality')">Cancel</button>
+          <button type="submit" form="postForm">Update</button>
+        </div>
+      </div>
+
+    </form>
+    <button class="cls" id="clsAddressForm"><b> Close </b></button>
+  </div>
+
+  <!-- Education -->
+  <div class="fd" id="education">
+    <h3 onclick="onDevelopment()">Education</h3>
+  </div>
+
+  <!-- Experience -->
+  <div class="fd" id="experience">
+    <h3 onclick="onDevelopment()">Works and Experiences</h3>
+  </div>
+
+  <!-- Social Media -->
+  <div class="fd" id="socials">
+    <h3 onclick="onDevelopment()">Socials/Websites</h3>
+  </div>
+
+  <!-- Works and Projects -->
+  <div class="fd" id="worksProjects">
+    <h3 onclick="onDevelopment()">Works and Projects</h3>
+  </div>
+
+  <!-- Password Change -->
+  <div class="p-psw-change">
+    <button onclick="PswOpen()" id="pswOpen">Change Password</button>
+    <form id="pswChange" action="" method="">
+      <input name="Oldpassword" placeholder="Enter Your Old Password">
+      <input name="password" placeholder="Create New Password"><br>
+      <button type="submit">Submit</button>
+    </form>
+    <button class="cls" onclick="PswClose()" id="pswClose"><b> Close </b></button>
+  </div>
+
+  <!-- Delete Account -->
+  <div class="delete accountDelete">
+    <button id="accountDeleteOpen">Delete Account</button>
+    <div class="blockQoute" id="showAccountDelete">
+      Are you sure you want to delete your account?
+      <form action="" method="">
+        <input name="id" hidden>
+        If yes<button type="submit" style="background: red; color: green;">Confirm</button><br>
+      </form>if no <button class="cls" id="closeDelete">Cancel</button>
+    </div>
+  </div>
+
 </div>
-    
 
 
 
- 
-  <a href="/logout">Logout</a>
- 
- <!-- Bio update Script -->
-  <script>
+
+
+<a href="/logout">Logout</a>
+
+<!-- Bio update Script -->
+<script>
   const nameInput = document.querySelector('input[name="name"]');
   const addressInput = document.querySelector('input[name="address"]');
   const submitBtn = document.getElementById('submitBtn');
@@ -456,129 +468,106 @@
   addressInput.addEventListener('focus', checkFocus);
   nameInput.addEventListener('blur', checkFocus);
   addressInput.addEventListener('blur', checkFocus);
-  
-  
+
+
 </script>
-  
-  <!-- Profile picture upload script -->
-  <script>
-     profilePicOpen = document.getElementById('picOpen');
-     profilePicForm = document.getElementById('picForm');
-     profilePicClose = document.getElementById('picClose');
-  
-     profilePicOpen.addEventListener('click', () => {
-       profilePicForm.style.display = 'block';
-       profilePicClose.style.display = 'block';
-     });
-  
-     profilePicClose.addEventListener('click', () => {
-       profilePicForm.style.display = 'none';
-       profilePicClose.style.display = 'none';
-     });
-  
-  </script>
 
-  <!-- Delete account script --> 
-  <script>
-     deleteOpen = document.getElementById('accountDeleteOpen');
-     deleteReady = document.getElementById('showAccountDelete');
-     CloseDelete = document.getElementById('closeDelete');
-     
-     deleteOpen.addEventListener('click', () => {
-       deleteReady.style.display = 'block';
-     });
+<!-- Profile picture upload script -->
+<script>
+  profilePicOpen = document.getElementById('picOpen');
+  profilePicForm = document.getElementById('picForm');
+  profilePicClose = document.getElementById('picClose');
 
-     CloseDelete.addEventListener('click', () => {
-       deleteReady.style.display = 'none';
-     });
-  </script>
+  profilePicOpen.addEventListener('click', () => {
+    profilePicForm.style.display = 'block';
+    profilePicClose.style.display = 'block';
+  });
 
-  <!-- Password change script -->
-  <script>
+  profilePicClose.addEventListener('click', () => {
+    profilePicForm.style.display = 'none';
+    profilePicClose.style.display = 'none';
+  });
+
+</script>
+
+<!-- Delete account script -->
+<script>
+  deleteOpen = document.getElementById('accountDeleteOpen');
+  deleteReady = document.getElementById('showAccountDelete');
+  CloseDelete = document.getElementById('closeDelete');
+
+  deleteOpen.addEventListener('click', () => {
+    deleteReady.style.display = 'block';
+  });
+
+  CloseDelete.addEventListener('click', () => {
+    deleteReady.style.display = 'none';
+  });
+</script>
+
+<!-- Password change script -->
+<script>
   OpenPswChange = document.getElementById('pswOpen');
   PswChangeShow = document.getElementById('pswChange');
   ClosePswChange = document.getElementById('pswClose');
 
-function PswOpen() {
+  function PswOpen() {
     PswChangeShow.style.display = 'block';
     ClosePswChange.style.display = 'block';
-}
+  }
 
-function PswClose() {
+  function PswClose() {
     PswChangeShow.style.display = 'none';
     ClosePswChange.style.display = 'none';
-}
+  }
 </script>
 
-  <!-- Message for features under development -->
-  <script>
-function onDevelopment() {
-  alert('This feature is undergoing development ..., please check back later')
-}
+<!-- Message for features under development -->
+<script>
+  function onDevelopment() {
+    alert('This feature is undergoing development ..., please check back later')
+  }
 </script>
 
-  <!-- Address script -->
-  <script>
-      const AddressOpen = document.getElementById('addressOpen');
-      const AddressForm = document.getElementById('addressForm');
-      const CloseAddressForm = document.getElementById('clsAddressForm');
-      
-      AddressOpen.addEventListener('click', () => {
-          AddressForm.style.display = "block";
-          AddressOpen.style.borderBottom = "0.3px solid brown";
-          CloseAddressForm.style.display = "block";
-      });
-      
-      CloseAddressForm.addEventListener('click', () => {
-          AddressForm.style.display = "none";
-          AddressOpen.style.borderBottom = "none";
-          CloseAddressForm.style.display = "none";
-      });
-  </script>
-  
-  <!-- Edit Script -->
-  <script>
-    function activateField(fieldName) {
-      const field = document.querySelector(`[name="${fieldName}"]`);
-      const editSpan = field.nextElementSibling;
-      const actionsDiv = document.getElementById(`${fieldName}Actions`);
+<!-- Address script -->
+<script>
+  const AddressOpen = document.getElementById('addressOpen');
+  const AddressForm = document.getElementById('addressForm');
+  const CloseAddressForm = document.getElementById('clsAddressForm');
 
-      field.removeAttribute('readonly');
-      field.focus();
-      editSpan.classList.add('hidden');
-      actionsDiv.classList.remove('hidden');
-    }
+  AddressOpen.addEventListener('click', () => {
+    AddressForm.style.display = "block";
+    AddressOpen.style.borderBottom = "0.3px solid brown";
+    CloseAddressForm.style.display = "block";
+  });
 
-    function cancelEdit(fieldName) {
-      const field = document.querySelector(`[name="${fieldName}"]`);
-      const editSpan = field.nextElementSibling;
-      const actionsDiv = document.getElementById(`${fieldName}Actions`);
+  CloseAddressForm.addEventListener('click', () => {
+    AddressForm.style.display = "none";
+    AddressOpen.style.borderBottom = "none";
+    CloseAddressForm.style.display = "none";
+  });
+</script>
 
-      field.setAttribute('readonly', 'readonly');
-      editSpan.classList.remove('hidden');
-      actionsDiv.classList.add('hidden');
-    }
-  </script>
+<!-- Edit Script -->
+<script>
+  function activateField(fieldName) {
+    const field = document.querySelector(`[name="${fieldName}"]`);
+    const editSpan = field.nextElementSibling;
+    const actionsDiv = document.getElementById(`${fieldName}Actions`);
 
+    field.removeAttribute('readonly');
+    field.focus();
+    editSpan.classList.add('hidden');
+    actionsDiv.classList.remove('hidden');
+  }
 
+  function cancelEdit(fieldName) {
+    const field = document.querySelector(`[name="${fieldName}"]`);
+    const editSpan = field.nextElementSibling;
+    const actionsDiv = document.getElementById(`${fieldName}Actions`);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    field.setAttribute('readonly', 'readonly');
+    editSpan.classList.remove('hidden');
+    actionsDiv.classList.add('hidden');
+  }
+</script>
