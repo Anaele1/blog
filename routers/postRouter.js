@@ -18,5 +18,6 @@ router.get('/each-post/:_id', JWT, articleController.userViewEacPostInDetails);
 router.get('/get-posts', JWT, articleController.getAllPosts);
 router.patch('/update-content/:id', articleController.updateContent);
 router.get('/post-per-writer/:id', JWT, articleController.postsByAWriter);
+router.get('/read-p/:id', articleController.publicViewEacPostInDetails);
 
 module.exports = router;

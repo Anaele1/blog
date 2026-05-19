@@ -73,14 +73,14 @@ exports.getAllPosts = async (req, res) => {
 // Retrieve posts
 exports.userViewEacPostInDetails = async (req, res) => {
     let workId = req.params._id.replace(/^:|:$/g, '').trim();;
-    console.log('This-work-id', workId);
-
+    // console.log('This-work-id', workId);
+    const user = userDetailsOnTemplate(req.user);
     try {
         const eachPost = await articleModel.findById(workId).populate('writerId').lean();
         const results = eachPost;
         //console.log(results);
 
-        return res.render('posts/viewPosts', { results })
+        return res.render('posts/viewPosts', { results, user })
         //return res.status(201).json({Message: 'POSTS', result}) 
     } catch (error) {
         console.log(error);
@@ -122,7 +122,7 @@ exports.postsByAWriter = async (req, res) => {
 
         // Find all articles by the writer
         const postsPerwriter = await articleModel.find({ writerId }).populate('writerId', 'email username').lean();
-        console.log('Details', postsPerwriter);
+        // console.log('Details', postsPerwriter);
 
         if (!postsPerwriter || postsPerwriter.length === 0) {
             return res.status(404).json({ message: 'No posts found for this writer' });
@@ -134,5 +134,23 @@ exports.postsByAWriter = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
+    }
+};
+
+// Retrieve posts
+exports.publicViewEacPostInDetails = async (req, res) => {
+    let workId = req.params.id.replace(/^:|:$/g, '').trim();;
+    // console.log('This-work-id', workId);
+
+    try {
+        const forAPost = await articleModel.findById(workId).populate('writerId').lean();
+        const results = forAPost;
+        //console.log(results);
+
+        return res.render('publicView', { results, title: 'Public viewing' })
+        //return res.status(201).json({Message: 'POSTS', result}) 
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json('Error getting this work in details')
     }
 };

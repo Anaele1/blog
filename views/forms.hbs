@@ -100,7 +100,7 @@
 <div class="main">
     <a href="/">Home</a>
     <div id="signUp" class="center">
-        <h3>Sign Up</h3>
+        <h3>Create Account</h3>
         <form class="a-form" action="/create" method="POST">
             <div>
                 <label class="a-label"  for="username">User-Name</label><br>
@@ -114,13 +114,13 @@
                 <label class="a-label" for="password">Password</label><br>
                 <input class="a-input" type="password" name="password" placeholder="Create your password" required>
             </div>
-            <button class="a-button"  type="submit">Submit</button>
-            <p> Have account with us <button onclick="Signin()" id="SignIn">Sign In</button></p>
+            <button class="a-button"  type="submit">Create</button>
+            <p> Have account with us <button onclick="Signin()" id="SignIn">Login</button></p>
         </form>
     </div>
 
     <div id="signIn">
-        <h3>Sign In</h3>
+        <h3>Login</h3>
         <form class="a-form" action="/login" method="POST">
             <div>
                 <label class="a-label" for="email">Email</label><br>
@@ -130,14 +130,15 @@
                 <label class="a-label" for="password">Password</label><br>
                 <input class="a-input" type="password" name="password" placeholder="Enter your password" required>
             </div>
-            <button class="a-button" type="submit">Submit</button>
-            <p>Don't have account with us <button onclick="Signup()" id="SignUp">Sign Up</button></p>
+            <button class="a-button" type="submit">Login</button>
+            <p>Don't have account with us <button onclick="Signup()" id="SignUp">Create One</button></p>
             <p> Click for <button onclick="Forgotpws()" id="ForgotPsw">Forgot Password</button></p>
         </form>
     </div>
 
     <div id="forgotPassword" class="center">
         <h3>Forgot Password</h3>
+        <p>Submit your registered email to create new password</p>
         <form class="a-form" action="/forgotpassword" method="POST">
             <div>
                 <label class="a-label" for="email">Email</label><br>
@@ -145,7 +146,7 @@
                 <p></p>
             </div>
             <button class="a-button" type="submit">Submit</button>
-            <p>Remebered Password<button onclick="Signin()" id="SignIn">Sign In</button>, Or Create a <button onclick="Signup()" id="SignUp">New Account</button></p>
+            <p>Remebered Password<button onclick="Signin()" id="SignIn">Login</button>, Or Create a <button onclick="Signup()" id="SignUp">New Account</button></p>
         </form>
     </div>
 
@@ -156,7 +157,7 @@
                 <label class="a-label" for="password">New Password</label>
                 <input class="a-input" type="password" name="password" placeholder="Enter new password" required>
             </div>
-            <button class="a-button" type="submit">Submit</button>
+            <button class="a-button" type="submit">Change</button>
         </form>
     </div>
 

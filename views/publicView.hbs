@@ -1,5 +1,3 @@
-<h1>Posts</h1>
-
 <style>
     :root {
         --primary: #4a6fa5;
@@ -9,15 +7,6 @@
         --code-bg: #1e1e1e;
         --code-text: #d4d4d4;
         --border: #dee2e6;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        color: var(--dark);
-        background: #fff;
-        margin: 0;
-        padding: 0;
     }
 
     .container {
@@ -62,35 +51,6 @@
         font-style: italic;
         color: var(--primary);
         padding: 10px 0;
-    }
-
-    #post-body {
-        min-height: 200px;
-        border: 1px dashed var(--border);
-        border-radius: 5px;
-        padding: 15px;
-        position: relative;
-    }
-
-    .toolbar {
-        display: flex;
-        gap: 5px;
-        margin-bottom: 10px;
-        flex-wrap: wrap;
-    }
-
-    .toolbar button {
-        background: var(--light);
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .toolbar button:hover {
-        background: var(--primary);
-        color: white;
     }
 
     .code-block {
@@ -144,13 +104,11 @@
         gap: 5px;
     }
 </style>
-<a href="/dashboard">Go to Dashboard</a>
-{{> writersNavs}}
 
 <div class="container">
     
     <div class="post" id="post-title">
-        <li>Title: {{results.title}}</li>
+        <li>{{results.title}}</li>
         <div class="post-meta">
             <span><i>Written By:</i> <strong>{{results.writerId.username}}</strong></span>
             <span><i class="far fa-calendar-alt"></i>Created At: {{results.createdAt}}</span><br>
@@ -159,17 +117,12 @@
     </div>
 
     <div class="post" id="post-keywords">
-        <i>KeyWords{{results.keywrds}}</i>
+        <i>{{results.keywrds}}</i>
     </div>
 
     <div class="post" id="post-body">
-        <div class="toolbar">
-            <button onclick="insertParagraph()" title="Insert Paragraph"><i class="fas fa-paragraph"></i></button>
-            <button onclick="insertImage()" title="Insert Image"><i class="fas fa-image"></i></button>
-            <button onclick="insertLink()" title="Insert Link"><i class="fas fa-link"></i></button>
-            <button onclick="insertCode()" title="Insert Code"><i class="fas fa-code"></i></button>
-        </div>
-        <div class="content post" contenteditable="true">
+    
+        <div class="content">
             <li>Content</li>
             {{results.content}}
         </div>
@@ -188,8 +141,11 @@
         </ul>
     </div>
 
+    <div class="writer-info">
+        <p>Written by: <strong>{{results.writerId.name}}</strong></p>
+        <p>Email: <a href="mailto:Vesullip@gmail.com">{{results.writerId.email}}</a></p>
+    </div>
 </div>
-<form action="">Delete this work!</form>
 
 <script>
     function insertParagraph() {

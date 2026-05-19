@@ -15,7 +15,7 @@
         <li>Title: {{this.title}}</li>
         <li>Description: {{this.description}}</li>
         <li>By: {{this.writerId.username}}</li>
-        <li><a href="http://">View post{{this._id}}</a></li>
+        <li><a href="/api/post/read-p/:{{this._id}}">View post{{this._id}}</a></li>
     </div><br>
 {{/each}}
 

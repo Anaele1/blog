@@ -112,7 +112,7 @@ exports.signin = async (req, res) => {
         }
 
         const existingWriter = await writerModel.findOne({ email })
-        console.log(existingWriter)
+        // console.log(existingWriter)
         if (!existingWriter) {
             return res.status(401).render('forms', {
                 errors: `Writer doesn't  exist with this ${email}`,
@@ -121,7 +121,7 @@ exports.signin = async (req, res) => {
         }
 
         const result = await bcrypt.compare(password, existingWriter.password);
-        console.log("RESULT", result);
+        // console.log("RESULT", result);
         if (!result) {
             return res.status(401).render('forms', {
                 errors: `Wrong Crendentials`,
@@ -146,15 +146,15 @@ exports.signin = async (req, res) => {
             process.env.ACCESS_SECRET, // Secret
             { expiresIn: process.env.ACCESS_TIMEOUT } // Expiration timme
         );
-        console.log('Access Token:', accessToken)
+        //console.log('Access Token:', accessToken)
 
-        //Refresh Token creation using JWT : Payload, + Secret, + Expiration time
+        // Refresh Token creation using JWT : Payload, + Secret, + Expiration time
         const refreshToken = jwt.sign(
             userData, // Payload
             process.env.REFRESH_SECRET, // Secret
             { expiresIn: process.env.REFRESH_TIMEOUT } // Expiration timme
         );
-        console.log('Refresh Token:', refreshToken)
+       // console.log('Refresh Token:', refreshToken)
 
         res.cookie('accessToken', accessToken,
             {

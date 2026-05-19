@@ -13,13 +13,29 @@ li{
   border: 2px solid black;
 
 }
+
+.viewing {
+  background: whitesmoke;
+  width: 80%;
+  margin-top: 1.6rem;
+  padding: 5px;
+}
+
+.viewing>div>li {
+  font-size: 30px;
+  margin-left: 5px;
+}
+
+.viewing>li {
+  font-size: 20px;
+  margin-left: 93%;
+}
 </style>
   <div>
     <nav>
       <ul class="" style="display: flex; gap: 2rem; font-size: 30px; color: green; padding: 1rem;">
           <li class=""> <a href="/form">Sign-Up</a>/<a href="/form">Sign-In</a></li>
           <li class=""> <a href="/about">About-Us</a></li>
-          <li> <a href="/api/post/get-posts">View Posts</a></li>
       </ul>
     </nav>
     
@@ -32,6 +48,17 @@ li{
     </div>
     
   </div>
+
+  {{#each results}}
+      <div class="viewing">
+        <div>
+          <li>{{this.title}}</li>
+          <i>By: {{this.writerId.username}}</i>
+        </div>
+          <li><a href="/api/post/read-p/:{{this._id}}">Read</a></li>
+    </div>
+    
+{{/each}}
 {{!-- Footer Section --}}
 {{> footer}}
 
