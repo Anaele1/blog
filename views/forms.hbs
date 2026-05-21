@@ -3,97 +3,93 @@
 
         text-align: center;
     }
+
     .main {
-    display: grid;
-    grid-template-columns: 1fr;
-    height: 100vh;
-}
+        display: grid;
+        grid-template-columns: 1fr;
+    }
 
-.center {
-    display: none;
-}
+    .center {
+        display: none;
+    }
 
-.a-button {
+    .a-button {
 
-    width: 7rem;
-    color: white;
-    background: rgba(4, 131, 4, 0.658);
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    border: none;
-    padding: 12px;
-    margin-left: 40%;
-    font-size: larger;
-}
+        width: 7rem;
+        color: white;
+        background: rgba(4, 131, 4, 0.658);
+        margin-bottom: 1rem;
+        border-radius: 5px;
+        border: none;
+        padding: 12px;
+        margin-left: 40%;
+        font-size: larger;
+    }
 
-.a-form {
-    background-color: rgb(238, 250, 246);
-    width: 650;
-    margin: 0 auto;
-    padding: 1.2rem;
-    border: solid rgb(153, 153, 156) 2px;
-    border-radius: 7px;
-}
+    .a-form {
+        width: 650;
+        margin: 0 auto;
+        padding: 1.2rem;
+        border: solid rgb(219, 219, 253) 2px;
+        border-radius: 7px;
+    }
 
-.a-label {
-    margin-left: 2rem;
-    margin-top: 2rem;
-    font-size: 20px;
-    font-weight: 700;
-}
+    .a-label {
+        margin-left: 2rem;
+        margin-top: 2rem;
+        font-size: 20px;
+        font-weight: 700;
+    }
 
-.a-input {
-    width: 600px;
-    margin-left: 2rem;
-    margin-bottom: 2rem;
-    height: 2.5rem;
-    padding: 20px 30px;
-    font-size: larger;
-    box-sizing: border-box;
-}
+    .a-input {
+        width: 600px;
+        margin-left: 2rem;
+        margin-bottom: 2rem;
+        height: 2.5rem;
+        padding: 20px 30px;
+        font-size: larger;
+        box-sizing: border-box;
+    }
 
-@media screen and (max-width: 900px) {
- 
-.a-form {
-    background-color: rgb(238, 250, 246);
-    width: 500px;
-    margin: 0 auto;
-    padding: 1.2rem;
-    border: solid rgb(153, 153, 156) 2px;
-    border-radius: 7px;
-}
+    @media screen and (max-width: 900px) {
 
-.a-label {
-    margin-left: 1.2rem;
-    margin-top: 2rem;
-}
+        .a-form {
+            width: 500px;
+            margin: 0 auto;
+            padding: 1.2rem;
+            border: solid rgb(153, 153, 156) 2px;
+            border-radius: 7px;
+        }
 
-.a-input {
-    width: 480px;
-    margin-left: 1.2rem;
-}
+        .a-label {
+            margin-left: 1.2rem;
+            margin-top: 2rem;
+        }
 
-}
+        .a-input {
+            width: 480px;
+            margin-left: 1.2rem;
+        }
 
-@media screen and (max-width: 600px) {
+    }
 
-.a-form {
-    background-color: rgb(238, 250, 246);
-    width: 320px;
-}
+    @media screen and (max-width: 600px) {
 
-.a-label {
-    margin-left: 0.8rem;
-    margin-top: 1rem;
-}
+        .a-form {
+            width: 320px;
+        }
 
-.a-input {
-    width: 300px;
-    margin-left: 0.8rem;
-}
+        .a-label {
+            margin-left: 0.8rem;
+            margin-top: 1rem;
+        }
 
-}
+        .a-input {
+            width: 300px;
+            margin-left: 0.8rem;
+        }
 
+    }
 </style>
 
 
@@ -103,18 +99,18 @@
         <h3>Create Account</h3>
         <form class="a-form" action="/create" method="POST">
             <div>
-                <label class="a-label"  for="username">User-Name</label><br>
+                <label class="a-label" for="username">User-Name</label><br>
                 <input class="a-input" type="name" name="username" placeholder="Create Username" required>
             </div>
             <div>
-                <label class="a-label"  for="email">Email</label><br>
+                <label class="a-label" for="email">Email</label><br>
                 <input class="a-input" type="email" name="email" placeholder="Enter your email" required>
             </div>
             <div>
                 <label class="a-label" for="password">Password</label><br>
                 <input class="a-input" type="password" name="password" placeholder="Create your password" required>
             </div>
-            <button class="a-button"  type="submit">Create</button>
+            <button class="a-button" type="submit">Create</button>
             <p> Have account with us <button onclick="Signin()" id="SignIn">Login</button></p>
         </form>
     </div>
@@ -146,7 +142,8 @@
                 <p></p>
             </div>
             <button class="a-button" type="submit">Submit</button>
-            <p>Remebered Password<button onclick="Signin()" id="SignIn">Login</button>, Or Create a <button onclick="Signup()" id="SignUp">New Account</button></p>
+            <p>Remebered Password<button onclick="Signin()" id="SignIn">Login</button>, Or Create a <button
+                    onclick="Signup()" id="SignUp">New Account</button></p>
         </form>
     </div>
 
