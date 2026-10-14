@@ -97,6 +97,14 @@
 
       <div id="welcome">
         <i>WELCOME</i> <b>{{user.name}}</b>
+        <p>
+          <h4>Resident Address</h4>
+          <p>{{writer.address.residentAddress.street}}, {{writer.address.residentAddress.city}}, {{writer.address.residentAddress.state}}, {{writer.address.residentAddress.country}}</p>
+        </p>
+        <p>
+          <h4>Occupation</h4>
+          <span>{{user.occupation}}</span>
+        </p>
       </div>
 
       <div class="d-post">
@@ -118,56 +126,91 @@
       </div>
 
     </div>
+     <!-- Profile Image -->
+  <div id="picForm">
+    <h3>Change Profile Picture</h3>
+    <form action="/address" method="POST">
+      <input type="hidden" name="id" value="{{user.id}}" required>
+      <input type="text" name="name">
+      <input type="text" name="address">
+      <input type="text" name="occupation">
+      <button id="" type="submit">Upload</button>
+    </form>
+    <button class="cls" id="picClose"><b>Close</b></button>
   </div>
+  </div>
+
+<hr><hr><hr>
+{{#if writer.address}}
+  <h2>Addresses</h2>
+  <p><strong>Resident Address:</strong> {{writer.address.residentAddress.street}}, {{writer.address.residentAddress.city}}, {{writer.address.residentAddress.state}}, {{writer.address.residentAddress.country}}</p>
+  <p><strong>Home Address:</strong> {{writer.address.homeAddress.street}}, {{writer.address.homeAddress.city}}, {{writer.address.homeAddress.state}}, {{writer.address.homeAddress.country}}</p>
+{{else}}
+  <p>No address on file.</p>
+{{/if}}
+
+  <div style="background: papayawhip">
+  <form action="/addresses" method="POST" class="address-form">
+        <!-- Hidden Writer ID -->
+        <input type="hidden" name="writerId" value="{{user.id}}">
+
+    <!-- Resident Address Section -->
+    <fieldset>
+      <legend>Resident Address</legend>
+      
+      <div class="form-group">
+        <label for="resident-country">Country</label>
+        <input type="text" id="resident-country" name="residentAddress[country]">
+      </div>
+
+      <div class="form-group">
+        <label for="resident-state">State</label>
+        <input type="text" id="resident-state" name="residentAddress[state]">
+      </div>
+
+      <div class="form-group">
+        <label for="resident-city">City</label>
+        <input type="text" id="resident-city" name="residentAddress[city]" value="{{writer.address.residentAddress.street}}">
+      </div>
+
+      <div class="form-group">
+        <label for="resident-street">Street</label>
+        <input type="text" id="resident-street" name="residentAddress[street]">
+      </div>
+    </fieldset>
+
+    <!-- Home Address Section -->
+    <fieldset>
+      <legend>Home Address</legend>
+
+      <div class="form-group">
+        <label for="home-country">Country</label>
+        <input type="text" id="home-country" name="homeAddress[country]">
+      </div>
+
+      <div class="form-group">
+        <label for="home-state">State</label>
+        <input type="text" id="home-state" name="homeAddress[state]">
+      </div>
+
+      <div class="form-group">
+        <label for="home-city">City</label>
+        <input type="text" id="home-city" name="homeAddress[city]">
+      </div>
+
+      <div class="form-group">
+        <label for="home-street">Street</label>
+        <input type="text" id="home-street" name="homeAddress[street]">
+      </div>
+    </fieldset>
+
+    <button type="submit">Save Addresses</button>
+  </form>
+
+  </div>
+
+
 
   {{> footer}}
 </div>
 
-<script>
-  // Store references to the elements for cleaner code
-  const navMenuButton = document.getElementById("navMenu");
-  const navShowElement = document.getElementById("navShow");
-
-  // Function to show the navigation menu
-  const showNav = (event) => {
-    // Stop the event from "bubbling up" to the bodys click listener
-    event.stopPropagation();
-    navShowElement.style.display = "block";
-  };
-
-  // Function to hide the navigation menu
-  const hideNav = () => {
-    navShowElement.style.display = "none";
-  };
-
-  // Add event listener to the button to show the menu
-  navMenuButton.addEventListener("click", showNav);
-
-  // Add event listener to the entire body to hide the menu
-  // document.body.addEventListener("click", hideNav);
-
-  // Add event listener to hide the menu
-  document.getElementById('close').addEventListener("click", hideNav);
-
-
-  // Optional: Also hide the nav if a link *within* the nav is clicked
-  const navLinks = document.querySelectorAll('.list');
-  navLinks.forEach(link => {
-    link.addEventListener('click', hideNav);
-  });
-
-
-</script>
-
-<!-- Responsive navigation script-->
-<script>
-  /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-  function myFunction() {
-    var x = document.getElementById("myTopnav");
-    if (x.className === "topnav") {
-      x.className += " responsive";
-    } else {
-      x.className = "topnav";
-    }
-  }
-</script>

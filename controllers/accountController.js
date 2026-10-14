@@ -1,286 +1,347 @@
 const bcrypt = require("bcrypt");
 const writerModel = require("../models/writerModel");
-const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 const { userDetailsOnTemplate } = require("../utils/templateConsistency");
 const articleModel = require("../models/articleModel");
+const addressm = require("../models/addressModels");
+const aboutModel = require("../models/aboutModel");
 const salts = 12;
 
-// About
+// About Me Update
+exports.aboutMe = async (req, res) => {
+  const { writerId, aboutme, occupation } = req.body;
+  try {
+    if (!writerId || !aboutme || !occupation) {
+      console.log("Some fields are missing");
+      return res
+        .status(401)
+        .json({ success: false, message: "Some fields are missing" });
+    }
+
+    const aboutUpdate = new aboutModel({ aboutme, occupation, writerId });
+    const result = await aboutUpdate.save();
+
+    return res.status(201).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(401)
+      .json({ success: false, message: "Cannot update about me" });
+  }
+};
+
+// About page
 exports.about = (req, res) => {
-    res.render('about', { title: 'About Page', metaTitle: 'about' });
+  res.render("about", { title: "About Page", metaTitle: "about" });
 };
 
 // Add image
 exports.addImage = async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(401).json('Please upload image')
-        }
-
-        // Image size limit
-        const imgMaxSize = 2 * 1024 * 1024; // 2MB
-        if (req.file.size > imgMaxSize) {
-            return res.status(401).json('image must be less than 2MB')
-        }
-
-        const { id } = req.body;
-
-        //const imagePath = '/uploads/' + req.file.filename;  // URL path for local storage (development purpose)
-        const imagePath = req.file.path || req.file.url; // URL path for cloudinary storage (production/deployment purpose)
-
-        const writerImage = await writerModel.findByIdAndUpdate(id, { image: imagePath });
-        return res.redirect('/profile?success_msg=Profile+picture+updated+successfully');
-        //return res.status(200).json({ success: true, message: writerImage });
-
-    } catch (err) {
-        console.error(err);
-        // return res.redirect('/profile');
-        return res.status(500)
+  try {
+    if (!req.file) {
+      return res.status(401).json("Please upload image");
     }
-}
+
+    // Image size limit
+    const imgMaxSize = 2 * 1024 * 1024; // 2MB
+    if (req.file.size > imgMaxSize) {
+      return res.status(401).json("image must be less than 2MB");
+    }
+
+    const { id } = req.body;
+
+    //const imagePath = '/uploads/' + req.file.filename;  // URL path for local storage (development purpose)
+    const imagePath = req.file.path || req.file.url; // URL path for cloudinary storage (production/deployment purpose)
+
+    const writerImage = await writerModel.findByIdAndUpdate(id, {
+      image: imagePath,
+    });
+    return res.redirect(
+      "/profile?success_msg=Profile+picture+updated+successfully",
+    );
+    //return res.status(200).json({ success: true, message: writerImage });
+  } catch (err) {
+    console.error(err);
+    // return res.redirect('/profile');
+    return res.status(500);
+  }
+};
 
 // Form
 exports.forms = (req, res) => {
-    res.render('forms', { title: 'Forms', metaTitle: 'form' });
+  res.render("forms", { title: "Forms", metaTitle: "form" });
 };
 
 // Dashboard
-exports.dashboard = (req, res) => {
-    const user = userDetailsOnTemplate(req.user);
+exports.dashboard = async (req, res) => {
+  const user = userDetailsOnTemplate(req.user);
+  try {
+    const writer = await writerModel
+      .findById(user.id)
+      .populate("address")
+      .lean();
     const Message = req.query.success_msg;
-    res.render('dashboard', { title: 'Dashboard', metaTitle: 'dashboard', message: Message, user });
+    res.render("dashboard", {
+      writer,
+      title: "Dashboard",
+      metaTitle: "dashboard",
+      message: Message,
+      user,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
 };
 
 // Profile
-exports.profile = (req, res) => {
-    const user = userDetailsOnTemplate(req.user);
+exports.profile = async (req, res) => {
+  const user = userDetailsOnTemplate(req.user);
+  var success = '';
+  try {
+    const aboutme = await aboutModel
+      .findOne({ writerId: user.id })
+      .populate("writerId")
+      .lean();
+    // console.log('About Mee', aboutme);
+
+    const writer = await writerModel
+      .findById(user.id)
+      .populate("address")
+      .lean();
     const updateMessage = req.query.success_msg;
-    res.render('profile', { title: 'Profile', metaTitle: 'profile', message: updateMessage, user });
+    res.render("profile", {
+      aboutme,
+      writer,
+      title: "Profile",
+      metaTitle: "profile",
+      message: updateMessage,
+      user,
+      success
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
 };
 
 // Create Account
 exports.signup = async (req, res) => {
-    const { password, email, username } = req.body;
-    try {
-        if (!password || !email || !username) {
-            console.log('Email or Password required')
-            return res.status(401).render('forms', {
-                errors: 'Email, Username and Password are required',
-            });
+  const { password, email, username } = req.body;
+  try {
+    if (!password || !email || !username) {
+      console.log("Email or Password required");
+      return res.status(401).render("forms", {
+        errors: "Email, Username and Password are required",
+      });
 
-            //json({ success: false, message: 'Email, Username and Password are required' })
-        }
-
-        const existingWriter = await writerModel.findOne({ email })
-        if (existingWriter) {
-            return res.status(401).render('forms', {
-                errors: `Writer exist with this ${email}`,
-            });
-            //json({ success: false, message: `Writer exist with this ${email}` })
-        }
-
-        const hashN = await bcrypt.hash(password, salts)
-        console.log(hashN)
-
-        const newWriter = new writerModel({ password: hashN, email, username })
-        const result = await newWriter.save()
-        result.password = undefined
-
-        return res.status(200).render('forms', {
-            message: `Account created successfully ${email}`,
-        });// return res.status(201).json({ success: true, message: `Account created for the Writer with this email ${email}` })
-    } catch (error) {
-        console.log(error)
-        return res.status(401).render('forms', {
-            errors: 'Cannot create account',
-        });
-        //json({ success: false, message: 'Cannot create account' })
+      //json({ success: false, message: 'Email, Username and Password are required' })
     }
 
+    const existingWriter = await writerModel.findOne({ email });
+    if (existingWriter) {
+      return res.status(401).render("forms", {
+        errors: `Writer exist with this ${email}`,
+      });
+      //json({ success: false, message: `Writer exist with this ${email}` })
+    }
+
+    const hashN = await bcrypt.hash(password, salts);
+    console.log(hashN);
+
+    const newWriter = new writerModel({ password: hashN, email, username });
+    const result = await newWriter.save();
+    result.password = undefined;
+
+    return res.status(200).render("forms", {
+      message: `Account created successfully ${email}`,
+    }); // return res.status(201).json({ success: true, message: `Account created for the Writer with this email ${email}` })
+  } catch (error) {
+    console.log(error);
+    return res.status(401).render("forms", {
+      errors: "Cannot create account",
+    });
+    //json({ success: false, message: 'Cannot create account' })
+  }
 };
 
 // Login to Account
 exports.signin = async (req, res) => {
-    const { password, email } = req.body;
-    try {
-        if (!password || !email) {
-            console.log('Email or Password required')
-            return res.status(401).render('forms', {
-                errors: 'Email or Password required',
-            });
-        }
-
-        const existingWriter = await writerModel.findOne({ email })
-        // console.log(existingWriter)
-        if (!existingWriter) {
-            return res.status(401).render('forms', {
-                errors: `Writer doesn't  exist with this ${email}`,
-            });
-            //json({ success: false, message: `Writer doesn't  exist with this ${email}` })
-        }
-
-        const result = await bcrypt.compare(password, existingWriter.password);
-        // console.log("RESULT", result);
-        if (!result) {
-            return res.status(401).render('forms', {
-                errors: `Wrong Crendentials`,
-            });
-            //json({ success: false, message: `Password doesn't  exist` })
-        }
-
-        // jwt payload
-        const userData = {
-            id: existingWriter._id,
-            email: existingWriter.email,
-            name: existingWriter.name,
-            username: existingWriter.username,
-            image: existingWriter.image,
-            address: existingWriter.address
-            // articleTitle: existingWriter.title
-        };
-
-        //Access Token creation using JWT : Payload, + Secret, + Expiration time
-        const accessToken = jwt.sign(
-            userData, // Payload
-            process.env.ACCESS_SECRET, // Secret
-            { expiresIn: process.env.ACCESS_TIMEOUT } // Expiration timme
-        );
-        //console.log('Access Token:', accessToken)
-
-        // Refresh Token creation using JWT : Payload, + Secret, + Expiration time
-        const refreshToken = jwt.sign(
-            userData, // Payload
-            process.env.REFRESH_SECRET, // Secret
-            { expiresIn: process.env.REFRESH_TIMEOUT } // Expiration timme
-        );
-       // console.log('Refresh Token:', refreshToken)
-
-        res.cookie('accessToken', accessToken,
-            {
-                httpOnly: true,
-                secure: 'proctected',
-                maxAge: 10 * 60 * 1000
-            }
-        )
-
-        res.redirect('/dashboard?success_msg=Login+Successful')
-        // res.status(201).json({ success: true, message: `Logged in successfully` })
-    } catch (error) {
-        console.log(error);
-        return res.status(401).render('forms', {
-            errors: 'Cannot create account',
-        });
+  const { password, email } = req.body;
+  try {
+    if (!password || !email) {
+      console.log("Email or Password required");
+      return res.status(401).render("forms", {
+        errors: "Email or Password required",
+      });
     }
 
+    const existingWriter = await writerModel.findOne({ email });
+    console.log(existingWriter);
+    if (!existingWriter) {
+      return res.status(401).render("forms", {
+        errors: `Writer doesn't  exist with this ${email}`,
+      });
+      //json({ success: false, message: `Writer doesn't  exist with this ${email}` })
+    }
+
+    const result = await bcrypt.compare(password, existingWriter.password);
+    // console.log("RESULT", result);
+    if (!result) {
+      return res.status(401).render("forms", {
+        errors: `Wrong Crendentials`,
+      });
+      //json({ success: false, message: `Password doesn't  exist` })
+    }
+
+    // jwt payload
+    const userData = {
+      id: existingWriter._id,
+      email: existingWriter.email,
+      name: existingWriter.name,
+      username: existingWriter.username,
+      image: existingWriter.image,
+    };
+
+    //Access Token creation using JWT : Payload, + Secret, + Expiration time
+    const accessToken = jwt.sign(
+      userData, // Payload
+      process.env.ACCESS_SECRET, // Secret
+      { expiresIn: process.env.ACCESS_TIMEOUT }, // Expiration timme
+    );
+    //console.log('Access Token:', accessToken)
+
+    // Refresh Token creation using JWT : Payload, + Secret, + Expiration time
+    const refreshToken = jwt.sign(
+      userData, // Payload
+      process.env.REFRESH_SECRET, // Secret
+      { expiresIn: process.env.REFRESH_TIMEOUT }, // Expiration timme
+    );
+    // console.log('Refresh Token:', refreshToken)
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: "proctected",
+      maxAge: 10 * 60 * 1000,
+    });
+
+    res.redirect("/dashboard?success_msg=Login+Successful");
+    // res.status(201).json({ success: true, message: `Logged in successfully` })
+  } catch (error) {
+    console.log(error);
+    return res.status(401).render("forms", {
+      errors: "Cannot create account",
+    });
+  }
 };
 
 // Retrieve all writers
 exports.getAllWriter = async (req, res) => {
-    try {
-        const writers = await writerModel.find()
-        // Convert each Mongoose document to a plain object
-        const result = writers.map(writer => writer.toObject());
-        //res.json(result)
+  try {
+    const writers = await writerModel.find();
+    // Convert each Mongoose document to a plain object
+    const result = writers.map((writer) => writer.toObject());
+    //res.json(result)
 
-        const allPost = await articleModel.find().populate('writerId', 'username');
-        const results = allPost.map(writer => writer.toObject());
-        console.log(results);
-        
-        res.render('index', { result, results, title: 'Home Page', metaTitle: 'home' })
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: error.message });
-    }
+    const allPost = await articleModel.find().populate("writerId", "username");
+    const results = allPost.map((writer) => writer.toObject());
+    console.log(results);
+
+    res.render("index", {
+      result,
+      results,
+      title: "Home Page",
+      metaTitle: "home",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
 // Delete a writer
 exports.deleteWriter = async (req, res) => {
-    const { id } = req.body;
-    try {
-        const deleteWriter = await writerModel.findByIdAndDelete(id);
-        if (!deleteWriter) {
-            console.log('Writer does not exist')
-            return res.status(401).json({ success: false, message: 'Writer does not exist' })
-        }
-
-        return res.status(201).json({ success: true, message: `Writer with ${id} id deleted ` });
-
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, message: 'Server error', error: error.message });
-    }
-};
-
-// Update writer address
-exports.updateWriterAddress = async (req, res) => {
-    const { id } = req.params;
-    const { address } = req.body;
-
-    if (!address) {
-        console.log('Not address')
-        return res.status(401).json({ success: false, message: 'Not an address: address is required' })
+  const { id } = req.body;
+  try {
+    const deleteWriter = await writerModel.findByIdAndDelete(id);
+    if (!deleteWriter) {
+      console.log("Writer does not exist");
+      return res
+        .status(401)
+        .json({ success: false, message: "Writer does not exist" });
     }
 
-    try {
-        const updateWriterAddress = await writerModel.findByIdAndUpdate(id, { address });
-
-        return res.status(200).json({ success: true, message: updateWriterAddress });
-    } catch (error) {
-        console.log(error)
-        error.error.messager
-        res.status(400).json({ success: false, message: 'Server error' });
-    }
+    return res
+      .status(201)
+      .json({ success: true, message: `Writer with ${id} id deleted ` });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(400)
+      .json({ success: false, message: "Server error", error: error.message });
+  }
 };
 
 // Update writer name
-exports.updateWriterName = async (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
+exports.updateWriterBasics = async (req, res) => {
+  // const { id } = req.params;
+  const { id, name, phone, dob } = req.body;
+  const success = "Updated Successfully";
 
-    if (!name) {
-        console.log('Not a name')
-        return res.status(401).json({ success: false, message: 'Not a name: name is required' })
-    }
+  if (!name) {
+    console.log("Not a name");
+    return res
+      .status(401)
+      .json({ success: false, message: "Not a name: name is required" });
+  }
 
-    try {
-        const updateWriterName = await writerModel.findByIdAndUpdate(id, { name });
-        return res.status(200).json({ success: true, message: updateWriterName });
-    } catch (error) {
-        console.log(error)
-        error.error.messager
-        res.status(400).json({ success: false, message: 'Server error' });
-    }
+  try {
+    const updateWriterBasic = await writerModel.findByIdAndUpdate(id, {
+      name,
+      phone,
+      dob,
+    });
+    res .redirect('/profile',)
+    //.json({ success: true, message: updateWriterName });
+  } catch (error) {
+    console.log(error);
+    error.error.messager;
+    res.status(400).json({ success: false, message: "Server error" });
+  }
 };
 
 // Profile Bio-data changes api
 exports.bioDataChanges = async (req, res) => {
-    try {
-        const { id, name, address } = req.body;
-        if (!id) {
-            //return res.status(401).json('Please logout and login again');
-            return res.redirect('/profile?update_msg=Please+logout+and+login+again')
-        }
-
-        const profileDataUpdate = await writerModel.findByIdAndUpdate(id, { name, address })
-        console.log(profileDataUpdate)
-        return res.redirect('/profile?update_msg=Updated')
-    } catch (error) {
-        console.log(error);
-        return res.redirect('/profile?update_msg=failled+to+update')
+  try {
+    const { id, name, address } = req.body;
+    if (!id) {
+      //return res.status(401).json('Please logout and login again');
+      return res.redirect("/profile?update_msg=Please+logout+and+login+again");
     }
+
+    const profileDataUpdate = await writerModel.findByIdAndUpdate(id, {
+      name,
+      address,
+    });
+    console.log(profileDataUpdate);
+    return res.redirect("/profile?update_msg=Updated");
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/profile?update_msg=failled+to+update");
+  }
 };
 
 // Logout writer
 exports.logout = async (req, res) => {
-    try {
-        res.clearCookie('accessToken', '', { maxAge: 0 });
-        res.redirect('/form');
-    } catch (error) {
-        console.log(error)
-        error.error.messager
-        res.status(400).json({ success: false, message: 'Server error' });
-    }
+  try {
+    res.clearCookie("accessToken", "", { maxAge: 0 });
+    res.redirect("/form");
+  } catch (error) {
+    console.log(error);
+    error.error.messager;
+    res.status(400).json({ success: false, message: "Server error" });
+  }
 };
 
 /*==================================== Crypto,  Nodemailer forgot and reset password functions =======================================*/
@@ -311,7 +372,6 @@ exports.logout = async (req, res) => {
 
 //     await writer.save();
 
-
 //     // 4. Create reset URL
 //     const resetUrl = `${req.protocol}://${req.get('host')}/api/writers/resetpassword/${resetToken}`;
 //     console.log("resetUrl", resetUrl);
@@ -323,8 +383,6 @@ exports.logout = async (req, res) => {
 //         token: resetToken,
 //         instruction: "Reset Password",
 //     }
-
-
 
 //     // 5. Send email
 //     //const message = `You are receiving this email because you (or someone else) has requested a password reset. Please make a PUT request to: \n\n ${resetUrl}`;
@@ -373,120 +431,200 @@ exports.logout = async (req, res) => {
 //     res.status(200).json({ success: true, data: 'Password reset successful' });
 // };
 
-
 /*==================================== JWT,  Nodemailer forgot and reset password functions =======================================*/
 
 // Forgot password request
 exports.forgotPassword = async (req, res) => {
-    try {
-        const { email } = req.body;
-        if (!email) {
-            return res.status(404).json({ success: false, message: 'Email is required' });
-        }
-
-        // 1. Check if writer exists
-        const writer = await writerModel.findOne({ email });
-        if (!writer) {
-            return res.status(404).json({ success: false, message: 'Writer not found' });
-        }
-
-        const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '6m' });
-
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_PASSWORD,
-            },
-
-        });
-
-        const receiver = {
-            from: process.env.EMAIL_FROM,
-            to: email,
-            subject: 'Reset Password',
-            text: `Click on this to reset your password: ${process.env.CLIENT_URL}/forgotpassword/${resetToken}`
-        }
-
-        await transporter.sendMail(receiver)
-
-        return res.status(200).json({ messager: `password reset link sent successfully to this email: ${email}` })
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: error.message });
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Email is required" });
     }
+
+    // 1. Check if writer exists
+    const writer = await writerModel.findOne({ email });
+    if (!writer) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Writer not found" });
+    }
+
+    const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "6m",
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const receiver = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: "Reset Password",
+      text: `Click on this to reset your password: ${process.env.CLIENT_URL}/forgotpassword/${resetToken}`,
+    };
+
+    await transporter.sendMail(receiver);
+
+    return res
+      .status(200)
+      .json({
+        messager: `password reset link sent successfully to this email: ${email}`,
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
 // Forgot password reset
 exports.resetForgotPassword = async (req, res) => {
-    const { password } = req.body;
-    const { resetToken } = req.params;
+  const { password } = req.body;
+  const { resetToken } = req.params;
 
-    if (!password) {
-        return res.status(400).json({ message: 'Password filed required' })
-    };
+  if (!password) {
+    return res.status(400).json({ message: "Password filed required" });
+  }
 
-    if (!resetToken) {
-        return res.status(400).json({ message: 'Check and click on the link sent to the email you provided and follow the instruction to reset your password' })
-    };
+  if (!resetToken) {
+    return res
+      .status(400)
+      .json({
+        message:
+          "Check and click on the link sent to the email you provided and follow the instruction to reset your password",
+      });
+  }
 
+  try {
+    const decode = jwt.verify(resetToken, process.env.JWT_SECRET);
 
+    const writer = await writerModel.findOne({ email: decode.email });
 
-    try {
-        const decode = jwt.verify(resetToken, process.env.JWT_SECRET)
+    const hashN = await bcrypt.hash(password, salts);
 
-        const writer = await writerModel.findOne({ email: decode.email })
+    writer.password = hashN;
 
-        const hashN = await bcrypt.hash(password, salts)
+    await writer.save();
 
-        writer.password = hashN
-
-        await writer.save();
-
-        res.redirect('/api/form')
-        // return res.status(200).json({ message: 'Password changed successfully' });
-    } catch (error) {
-        console.log(error);
-        return res.status(200).json({ message: 'Invalid or expired Token ' });
-    }
+    res.redirect("/api/form");
+    // return res.status(200).json({ message: 'Password changed successfully' });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Invalid or expired Token " });
+  }
 };
 
 // Change password for a logged in user
 exports.loggedInResetPassword = async (req, res) => {
-    //const { id } = req.params;
-    const {id, oldPassword, newPassword } = req.body;
+  //const { id } = req.params;
+  const { id, oldPassword, newPassword } = req.body;
 
-    if (!id || !oldPassword || !newPassword) {
-        return res.status(400).json({ message: 'Old and New password field are required' })
-    };
+  if (!id || !oldPassword || !newPassword) {
+    return res
+      .status(400)
+      .json({ message: "Old and New password field are required" });
+  }
 
-    try {
-
-        const writer = await writerModel.findById(id)
-        if (!writer) {
-            return res.status(400).json({ message: 'Writer does not exist' })
-        };
-
-        const oldpasswordMatch = await bcrypt.compare(oldPassword, writer.password)
-        if (!oldpasswordMatch) {
-            return res.status(400).json({ message: 'Incorrect old password' })
-        };
-
-        const hashNewPassword = await bcrypt.hash(newPassword, salts)
-
-        writer.password = hashNewPassword
-        await writer.save();
-
-
-        // writer.password = hashN
-
-        // await writer.save();
-
-        return res.status(200).json({ message: 'Password changed successfully' });
-    } catch (error) {
-        console.log(error);
-        return res.status(200).json({ message: 'Cannot change your password ' });
+  try {
+    const writer = await writerModel.findById(id);
+    if (!writer) {
+      return res.status(400).json({ message: "Writer does not exist" });
     }
+
+    const oldpasswordMatch = await bcrypt.compare(oldPassword, writer.password);
+    if (!oldpasswordMatch) {
+      return res.status(400).json({ message: "Incorrect old password" });
+    }
+
+    const hashNewPassword = await bcrypt.hash(newPassword, salts);
+
+    writer.password = hashNewPassword;
+    await writer.save();
+
+    // writer.password = hashN
+
+    // await writer.save();
+
+    return res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Cannot change your password " });
+  }
+};
+
+exports.addressUpdate = async (req, res) => {
+  const { address, name, occupation, id } = req.body;
+
+  if (!address) {
+    console.log("Not a address");
+    return res
+      .status(401)
+      .json({ success: false, message: "Not a address: address is required" });
+  }
+
+  try {
+    const updateWriterAddress = await writerModel.findByIdAndUpdate(id, {
+      address,
+      name,
+      occupation,
+    });
+    return res
+      .status(200)
+      .json({ success: true, message: updateWriterAddress });
+  } catch (error) {
+    console.log(error);
+    error.error.messager;
+    res.status(400).json({ success: false, message: "Server error" });
+  }
+};
+
+// /////////////////////////////////////////////////////////////////////////////////////
+
+exports.fullAddress = async (req, res) => {
+  try {
+    const { writerId, residentAddress, homeAddress } = req.body;
+    console.log(
+      `ID = ${writerId}, ResidentAddress = ${residentAddress}, HomeAddress = ${homeAddress}`,
+    );
+
+    if (!writerId) {
+      return res.status(400).json({ error: "Writer ID is required." });
+    }
+
+    // upsert: true finds the document by writerId to update it, or creates it if it doesn't exist
+    const updatedAddress = await addressm.findOneAndUpdate(
+      { writerId },
+      { residentAddress, homeAddress },
+      { new: true, upsert: true, runValidators: true },
+    );
+
+    // For standard HTML form submissions, redirect to a success page or profile view
+    // res.redirect(`/writers/${writerId}/profile`);
+
+    // Alternatively, if you handle this form submission via AJAX/Fetch, use:
+    res.status(200).json({ success: true, data: updatedAddress });
+  } catch (error) {
+    console.error("Error saving address:", error);
+    res
+      .status(500)
+      .json({ error: "Server error. Failed to save address data." });
+  }
+};
+
+exports.aDemo = async (req, res) => {
+  const id = "6a8c4ec96a8fe7b537107ed3";
+  try {
+    const writer = await writerModel.findById(id).populate("address").lean();
+    res.render("res", { writer });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
 };

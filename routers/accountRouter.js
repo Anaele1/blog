@@ -38,11 +38,8 @@ router.get('/', accountController.getAllWriter);
 // Delete a writer route
 router.post('/delete', accountController.deleteWriter);
 
-// Update writer address route
-router.patch('/update_address/:id', accountController.updateWriterAddress);
-
 // Update writer name route
-router.patch('/update_name/:id', accountController.updateWriterName);
+router.post('/update_name', accountController.updateWriterBasics);
 
 // Forgot password request route
 router.post('/forgotpassword', accountController.forgotPassword);
@@ -58,6 +55,15 @@ router.post('/resetpassword', accountController.loggedInResetPassword);
 
 // Logout writer route
 router.get('/logout', accountController.logout);
+
+// Address Update
+router.post('/address', accountController.addressUpdate);
+
+router.post('/addresses', accountController.fullAddress);
+
+router.get('/resfile', accountController.aDemo);
+
+router.post('/about-me', accountController.aboutMe);
 
 
 module.exports = router;

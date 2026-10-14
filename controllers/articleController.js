@@ -139,7 +139,7 @@ exports.postsByAWriter = async (req, res) => {
 
 // Retrieve posts
 exports.publicViewEacPostInDetails = async (req, res) => {
-    let workId = req.params.id.replace(/^:|:$/g, '').trim();;
+    let workId = req.params.id.replace(/^:|:$/g, '').trim();
     // console.log('This-work-id', workId);
 
     try {

@@ -134,6 +134,17 @@ body {
   </ul>
 </div>
 
+<h1>{{writer.name}}</h1>
+<p>Email: {{writer.email}}</p>
+
+{{#if writer.address}}
+  <h2>Addresses</h2>
+  <p><strong>Resident Address:</strong> {{writer.address.residentAddress.street}}, {{writer.address.residentAddress.city}}, {{writer.address.residentAddress.state}}, {{writer.address.residentAddress.country}}</p>
+  <p><strong>Home Address:</strong> {{writer.address.homeAddress.street}}, {{writer.address.homeAddress.city}}, {{writer.address.homeAddress.state}}, {{writer.address.homeAddress.country}}</p>
+{{else}}
+  <p>No address on file.</p>
+{{/if}}
+
 <div class="footer"><p>Resize the browser window to see the responsive effect.</p></div>
   
 </div>

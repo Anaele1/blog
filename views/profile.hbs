@@ -291,64 +291,96 @@
     <h3>Who I Am</h3>
 
     <div>
-      <textarea name="aboutMe" value="Wr" readonly style="height: 300px; border: none">
-      Results-driven Full Stack Software Developer with 3 years of experience in designing, developing, and deploying scalable dynamic and static web applications.
+      <form action="/about-me" method="post">
+        <input type="hidden" name="writerId" value="{{user.id}}">
+        <div>
+          <label for="occupation">Profile Title</label>
+          <input type="text" name="occupation" value="{{aboutme.occupation}}">
+        </div>
+        <div>
+          <label for="aboutme">About Me</label>
+          <textarea name="aboutme" id="">{{aboutme.aboutme}}</textarea>
+        </div>
+        <button type="submit">Update</button>
+      </form>
 
-        Combining a strong foundation in Philosophy and Psychology with technical expertise in JavaScript, Node.js, React, Express.js, CSS, MySQL, MongoDB, and HTML.
-
-        Proven ability to deliver high-quality solutions, drive innovation, and collaborate with cross-functional teams.
-
-       Skilled in leveraging technical knowledge to create intuitive user experiences and drive business growth. 
-       
-       </textarea>
-      <span class="edit" onclick="activateField('aboutMe')">Edit</span>
-      <div class="actions hidden" id="aboutMeActions">
-        <button type="button" onclick="cancelEdit('aboutMe')">Cancel</button>
-        <button type="submit" form="postForm">Update</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bio Data -->
-  <div class="fd" id="bios">
-    <h3 class="bios-h">Bio Data</h3>
-    <form id="details" action="" method="">
-      <input type="text" name="name" value="{{user.id}}" hidden>
-
-      <div>
+      <form action="/update_name" method="post">
+      <input type="text" name="id" value="{{user.id}}" hidden>
+        <div>
         <label for="name">Name</label>
-        <input type="text" name="name" value="{{user.name}}" readonly>
-        <span class="edit" onclick="activateField('name')">Edit</span>
-        <div class="actions hidden" id="nameActions">
-          <button type="button" onclick="cancelEdit('name')">Cancel</button>
-          <button type="submit" form="postForm">Update</button>
-        </div>
-      </div>
-      <div>
+        <input type="text" name="name" value="{{user.name}}">
         <label for="phone">Phone</label>
-        <input type="phone" name="phone" value="{{user.phone}}" readonly>
-        <span class="edit" onclick="activateField('phone')">Edit</span>
-        <div class="actions hidden" id="phoneActions">
-          <button type="button" onclick="cancelEdit('phone')">Cancel</button>
-          <button type="submit" form="postForm">Update</button>
-        </div>
+        <input type="text" name="phone" value="{{user.phone}}">
+        <label for="dob">D.O.B</label>
+        <input type="date" name="dob" value="{{user.dob}}">
+        <button type="submit">Update</button>
       </div>
-      <div>
-        <label for="dob">Date of Birth</label>
-        <input type="text" name="dob" value="D.O.B" readonly>
-        <span class="edit" onclick="activateField('dob')">Edit</span>
-        <div class="actions hidden" id="dobActions">
-          <button type="button" onclick="cancelEdit('dob')">Cancel</button>
-          <button type="submit" form="postForm">Update</button>
-        </div>
-      </div>
-
-    </form>
+      </form>
+    </div>
   </div>
 
   <!-- Address -->
   <div class="fd" id="address">
     <h3 id="addressOpen">Address</h3>
+<form action="/addresses" method="POST" class="address-form">
+        <!-- Hidden Writer ID -->
+        <input type="hidden" name="writerId" value="{{user.id}}">
+
+    <!-- Resident Address Section -->
+    <fieldset>
+      <legend>Resident Address</legend>
+      
+      <div class="form-group">
+        <label for="resident-country">Country</label>
+        <input type="text" id="resident-country" name="residentAddress[country]" value="{{writer.address.residentAddress.country}}">
+      </div>
+
+      <div class="form-group">
+        <label for="resident-state">State</label>
+        <input type="text" id="resident-state" name="residentAddress[state]" value="{{writer.address.residentAddress.state}}">
+      </div>
+
+      <div class="form-group">
+        <label for="resident-city">City</label>
+        <input type="text" id="resident-city" name="residentAddress[city]" value="{{writer.address.residentAddress.city}}">
+      </div>
+
+      <div class="form-group">
+        <label for="resident-street">Street</label>
+        <input type="text" id="resident-street" name="residentAddress[street]" value="{{writer.address.residentAddress.street}}">
+      </div>
+    </fieldset>
+
+    <!-- Home Address Section -->
+    <fieldset>
+      <legend>Home Address</legend>
+
+      <div class="form-group">
+        <label for="home-country">Country</label>
+        <input type="text" id="home-country" name="homeAddress[country]" >
+      </div>
+
+      <div class="form-group">
+        <label for="home-state">State</label>
+        <input type="text" id="home-state" name="homeAddress[state]" value="{{writer.address.homeAddress.state}}">
+      </div>
+
+      <div class="form-group">
+        <label for="home-city">City</label>
+        <input type="text" id="home-city" name="homeAddress[city]" value="{{writer.address.homeAddress.city}}">
+      </div>
+
+      <div class="form-group">
+        <label for="home-street">Street</label>
+        <input type="text" id="home-street" name="homeAddress[street]" value="{{writer.address.homeAddress.street}}">
+      </div>
+    </fieldset>
+
+    <button type="submit">Save Addresses</button>
+  </form>
+
+
+
     <form id="addressForm" action="" method=" ">
 
       <div>
